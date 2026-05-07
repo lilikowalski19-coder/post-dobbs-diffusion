@@ -1,0 +1,189 @@
+state,bill_id,novelty,novelty_corpus,professionalism,gov_control,direction,mechanism,advocacy_raw,log_advocacy
+Alabama,SB 261,0.628044,0.628044,0.162,Unified Republican,Restrictive,Funding,,
+Arizona,SB 1473,0.608736,0.608736,0.306,Divided,Restrictive,Funding,,
+Arizona,HB 2564,0.661787,0.661787,0.306,Divided,Restrictive,Proc_Ban,,
+Arkansas,HR 1010,0.635363,0.631434,0.204,Unified Republican,Restrictive,Definitional,202212.0795472307,12.217077269664532
+Arkansas,SB 138,0.836099,0.667969,0.204,Unified Republican,Protective,Proc_Expansion,202212.0795472307,12.217077269664532
+Arkansas,SB 307,0.874706,0.814124,0.204,Unified Republican,Neutral,Constitutional,202212.0795472307,12.217077269664532
+Arkansas,SB 286,0.711297,0.631434,0.204,Unified Republican,Restrictive,Proc_Ban,202212.0795472307,12.217077269664532
+Arkansas,SB 384,0.890441,0.763608,0.204,Unified Republican,Restrictive,Funding,202212.0795472307,12.217077269664532
+Arkansas,SB 446,0.791257,0.791257,0.204,Unified Republican,Restrictive,Definitional,202212.0795472307,12.217077269664532
+Arkansas,SB 463,0.904865,0.775137,0.204,Unified Republican,Restrictive,Criminal,202212.0795472307,12.217077269664532
+Arkansas,SB 466,0.931608,0.760538,0.204,Unified Republican,Restrictive,Proc_Ban,202212.0795472307,12.217077269664532
+Arkansas,SB 495,0.704483,0.6487,0.204,Unified Republican,Restrictive,Criminal,202212.0795472307,12.217077269664532
+Arkansas,SB 542,0.771168,0.76318,0.204,Unified Republican,Restrictive,Proc_Ban,202212.0795472307,12.217077269664532
+Arkansas,HB 1786,0.864322,0.667969,0.204,Unified Republican,Restrictive,Proc_Ban,202212.0795472307,12.217077269664532
+Arkansas,SB 465,0.78612,0.6487,0.204,Unified Republican,Restrictive,Funding,202212.0795472307,12.217077269664532
+California,AR 6,0.735707,0.06902,0.732,Unified Democratic,Protective,Constitutional,0.0,0.0
+California,SR 9,0.748897,0.06902,0.732,Unified Democratic,Neutral,Constitutional,0.0,0.0
+California,SR 41,0.851631,0.851631,0.732,Unified Democratic,Protective,Constitutional,0.0,0.0
+California,AB 100,0.584457,0.557214,0.732,Unified Democratic,Protective,Funding,0.0,0.0
+California,SB 101,0.676297,0.557214,0.732,Unified Democratic,Protective,Funding,0.0,0.0
+California,AB 118,0.747571,0.612323,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,AB 1029,0.804715,0.804715,0.732,Unified Democratic,Restrictive,Definitional,0.0,0.0
+California,SB 385,0.822513,0.80134,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,AB 1707,0.881387,0.663807,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,AB 2527,0.831111,0.815298,0.732,Unified Democratic,Protective,Proc_Expansion,0.0,0.0
+California,AB 352,0.72561,0.687399,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,AB 571,0.640505,0.640505,0.732,Unified Democratic,Protective,Funding,0.0,0.0
+California,SB 345,0.534679,0.534679,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,SB 487,0.871539,0.612323,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,AB 3281,0.713537,0.67756,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,AB 1194,0.693519,0.693519,0.732,Unified Democratic,Protective,Shield,0.0,0.0
+California,SB 887,0.66741,0.66741,0.732,Unified Democratic,Restrictive,Proc_Ban,0.0,0.0
+Colorado,HM 1002,0.936685,0.841623,0.433,Unified Democratic,Neutral,Definitional,202303.0895789782,12.217527238369097
+Colorado,SB 188,0.513287,0.513287,0.433,Unified Democratic,Protective,Shield,202303.0895789782,12.217527238369097
+Colorado,SB 190,0.878363,0.686401,0.433,Unified Democratic,Protective,Shield,202303.0895789782,12.217527238369097
+Colorado,HB 1218,0.672683,0.672683,0.433,Unified Democratic,Protective,Definitional,202303.0895789782,12.217527238369097
+Connecticut,SB 3,0.628687,0.628687,0.54,Unified Democratic,Protective,Shield,,
+Delaware,SB 158,0.85684,0.85684,0.485,Unified Democratic,Protective,Shield,0.0,0.0
+Delaware,SB 301,0.831888,0.831888,0.485,Unified Democratic,Protective,Funding,0.0,0.0
+Florida,SB 300,0.727342,0.727342,0.352,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Hawaii,SB 1,0.707177,0.707177,0.429,Unified Democratic,Protective,Shield,0.0,0.0
+Hawaii,HR 57,0.830824,0.645261,0.429,Unified Democratic,Protective,Constitutional,0.0,0.0
+Hawaii,HR 107,0.792657,0.779577,0.429,Unified Democratic,Protective,Definitional,0.0,0.0
+Hawaii,HR 118,0.794622,0.645261,0.429,Unified Democratic,Neutral,Constitutional,0.0,0.0
+Idaho,HJM 2,0.735707,0.735707,0.237,Unified Republican,Neutral,Constitutional,202303.08957897825,12.217527238369097
+Idaho,SB 1044,0.67645,0.609744,0.237,Unified Republican,Restrictive,Criminal,202303.08957897825,12.217527238369097
+Idaho,HB 374,0.716191,0.662123,0.237,Unified Republican,Protective,Definitional,202303.08957897825,12.217527238369097
+Idaho,HB 242,0.842815,0.609744,0.237,Unified Republican,Neutral,Criminal,202303.08957897825,12.217527238369097
+Illinois,HB 1596,0.670548,0.670548,0.538,Unified Democratic,Restrictive,Definitional,0.0,0.0
+Illinois,HB 3762,0.671535,0.671535,0.538,Unified Democratic,Restrictive,Criminal,0.0,0.0
+Illinois,SB 1909,0.73245,0.73245,0.538,Unified Democratic,Protective,Shield,0.0,0.0
+Illinois,SB 1344,0.7482,0.7482,0.538,Unified Democratic,Protective,Shield,0.0,0.0
+Illinois,SB 1561,0.891549,0.773738,0.538,Unified Democratic,Protective,Shield,0.0,0.0
+Indiana,HB 1568,0.879759,0.879759,0.237,Unified Republican,Protective,Shield,0.0,0.0
+Iowa,HB 732,0.594774,0.594774,0.254,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Kansas,HB 2100,0.820009,0.809217,0.253,Divided,Restrictive,Definitional,0.0,0.0
+Kansas,HB 2358,0.811782,0.811782,0.253,Divided,Neutral,Definitional,0.0,0.0
+Kansas,HB 2313,0.75365,0.344298,0.253,Divided,Restrictive,Definitional,0.0,0.0
+Kansas,HB 2184,0.737124,0.737124,0.253,Divided,Restrictive,Funding,0.0,0.0
+Kansas,HB 2264,0.705041,0.705041,0.253,Divided,Restrictive,Definitional,0.0,0.0
+Kansas,HB 2002,0.720539,0.720539,0.253,Divided,Restrictive,Funding,0.0,0.0
+Kansas,HB 2060,0.825599,0.806775,0.253,Divided,Restrictive,Funding,0.0,0.0
+Kansas,HB 2436,0.726766,0.726766,0.253,Divided,Restrictive,Criminal,0.0,0.0
+Kansas,HB 2749,0.83353,0.344298,0.253,Divided,Restrictive,Definitional,0.0,0.0
+Kentucky,SR 20,0.89192,0.89192,0.198,Divided,Restrictive,Definitional,,
+Kentucky,HB 170,0.802641,0.802641,0.198,Divided,Neutral,Funding,,
+Louisiana,HR 14,0.791257,0.770581,0.274,Divided,Restrictive,Definitional,202303.08957897825,12.217527238369097
+Louisiana,SB 41,0.754635,0.735777,0.274,Divided,Restrictive,Funding,202303.08957897825,12.217527238369097
+Louisiana,HB 1,0.673423,0.673423,0.274,Divided,Restrictive,Funding,202303.08957897825,12.217527238369097
+Maine,HB 1343,0.956284,0.668131,0.226,Unified Democratic,Protective,Constitutional,0.0,0.0
+Maine,HB 616,0.734396,0.734396,0.226,Unified Democratic,Protective,Shield,0.0,0.0
+Maine,HB 935,0.792618,0.437008,0.226,Unified Democratic,Protective,Funding,0.0,0.0
+Maine,HB 995,0.915721,0.437008,0.226,Unified Democratic,Neutral,Definitional,0.0,0.0
+Maine,HB 263,0.864955,0.540724,0.226,Unified Democratic,Protective,Proc_Expansion,0.0,0.0
+Maine,HB 1619,0.879672,0.60554,0.226,Unified Democratic,Protective,Shield,0.0,0.0
+Maine,HB 2010,0.815004,0.540724,0.226,Unified Democratic,Restrictive,Proc_Ban,0.0,0.0
+Maryland,HB 200,0.686543,0.686543,0.421,Unified Democratic,Neutral,Funding,0.0,0.0
+Maryland,SB 341,0.831888,0.789843,0.421,Unified Democratic,Protective,Shield,0.0,0.0
+Maryland,SB 786,0.67308,0.60166,0.421,Unified Democratic,Protective,Shield,0.0,0.0
+Maryland,SB 859,0.640324,0.60166,0.421,Unified Democratic,Protective,Shield,0.0,0.0
+Michigan,SB 4,0.896438,0.394004,0.477,Unified Democratic,Protective,Shield,0.0,0.0
+Michigan,HB 4006,0.961499,0.320919,0.477,Unified Democratic,Protective,Proc_Expansion,0.0,0.0
+Michigan,HB 4032,0.937136,0.35098,0.477,Unified Democratic,Protective,Criminal,0.0,0.0
+Michigan,SB 2,0.970993,0.320919,0.477,Unified Democratic,Protective,Shield,0.0,0.0
+Michigan,HR 72,0.862999,0.8365,0.477,Unified Democratic,Protective,Definitional,0.0,0.0
+Michigan,SB 147,0.939008,0.394004,0.477,Unified Democratic,Protective,Shield,0.0,0.0
+Michigan,HR 123,0.727342,0.727342,0.477,Unified Democratic,Protective,Funding,0.0,0.0
+Michigan,SB 216,0.839076,0.821293,0.477,Unified Democratic,Neutral,Definitional,0.0,0.0
+Michigan,SB 68,0.887493,0.35098,0.477,Unified Democratic,Restrictive,Criminal,0.0,0.0
+Michigan,SB 474,0.721511,0.721511,0.477,Unified Democratic,Protective,Proc_Expansion,0.0,0.0
+Michigan,SB 476,0.893028,0.696342,0.477,Unified Democratic,Protective,Definitional,0.0,0.0
+Michigan,SB 477,0.88007,0.696342,0.477,Unified Democratic,Restrictive,Funding,0.0,0.0
+Michigan,HB 4949,0.594234,0.594234,0.477,Unified Democratic,Protective,Constitutional,0.0,0.0
+Michigan,HB 4951,0.831375,0.831375,0.477,Unified Democratic,Protective,Definitional,0.0,0.0
+Michigan,HB 4953,0.953447,0.675175,0.477,Unified Democratic,Protective,Shield,0.0,0.0
+Michigan,HB 4955,0.897777,0.784097,0.477,Unified Democratic,Neutral,Definitional,0.0,0.0
+Minnesota,HB 1,0.780292,0.780292,0.452,Unified Democratic,Protective,Constitutional,,
+Minnesota,SB 2995,0.748393,0.748393,0.452,Unified Democratic,Protective,Funding,,
+Mississippi,SR 539,0.916453,0.817667,0.149,Unified Republican,Restrictive,Constitutional,0.0,0.0
+Mississippi,HB 1125,0.810492,0.556296,0.149,Unified Republican,Restrictive,Criminal,0.0,0.0
+Mississippi,HB 1149,0.727115,0.672154,0.149,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Mississippi,HB 1390,0.903966,0.672154,0.149,Unified Republican,Restrictive,Funding,0.0,0.0
+Mississippi,HB 1671,0.608736,0.556296,0.149,Unified Republican,Restrictive,Funding,0.0,0.0
+Mississippi,SB 2781,0.850983,0.69001,0.149,Unified Republican,Neutral,Funding,0.0,0.0
+Missouri,SB 51,0.80244,0.386119,0.286,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Missouri,HB 11,0.765852,0.764424,0.286,Unified Republican,Neutral,Funding,0.0,0.0
+Missouri,HB 1155,0.528693,0.386119,0.286,Unified Republican,Neutral,Definitional,0.0,0.0
+Missouri,HB 402,0.583338,0.516351,0.286,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Missouri,SB 106,0.777613,0.382938,0.286,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Missouri,SB 157,0.704229,0.382938,0.286,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Montana,HB 786,0.851929,0.616273,0.231,Unified Republican,Restrictive,Definitional,202303.08957897825,12.217527238369097
+Montana,SB 112,0.757615,0.711925,0.231,Unified Republican,Restrictive,Proc_Ban,202303.08957897825,12.217527238369097
+Montana,HB 303,0.77564,0.688814,0.231,Unified Republican,Restrictive,Constitutional,202303.08957897825,12.217527238369097
+Montana,HB 575,0.800168,0.616273,0.231,Unified Republican,Restrictive,Criminal,202303.08957897825,12.217527238369097
+Montana,HB 625,0.75365,0.697085,0.231,Unified Republican,Neutral,Definitional,202303.08957897825,12.217527238369097
+Montana,SB 154,0.942499,0.755873,0.231,Unified Republican,Restrictive,Constitutional,202303.08957897825,12.217527238369097
+Montana,HB 544,0.851025,0.592655,0.231,Unified Republican,Restrictive,Funding,202303.08957897825,12.217527238369097
+Montana,HB 721,0.792178,0.697085,0.231,Unified Republican,Restrictive,Criminal,202303.08957897825,12.217527238369097
+Montana,HB 862,0.917873,0.592655,0.231,Unified Republican,Restrictive,Funding,202303.08957897825,12.217527238369097
+Montana,HB 937,0.771149,0.688814,0.231,Unified Republican,Restrictive,Definitional,202303.08957897825,12.217527238369097
+Nebraska,LB 574,0.829278,0.829278,0.293,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+Nebraska,LB 814,0.673423,0.673423,0.293,Unified Republican,Restrictive,Funding,0.0,0.0
+Nevada,SJR 7,0.594234,0.594234,0.291,Divided,Protective,Constitutional,0.0,0.0
+Nevada,AB 270,0.743281,0.743281,0.291,Divided,Restrictive,Criminal,0.0,0.0
+Nevada,SB 370,0.193251,0.193251,0.291,Divided,Protective,Shield,0.0,0.0
+New Jersey,AB 3975,0.707177,0.707177,0.563,Unified Democratic,Protective,Shield,0.0,0.0
+New Jersey,SB 3275,0.809346,0.786445,0.563,Unified Democratic,Protective,Funding,0.0,0.0
+New Jersey,AB 5096,0.671535,0.671535,0.563,Unified Democratic,Protective,Shield,0.0,0.0
+New Mexico,HB 7,0.627262,0.450852,0.288,Unified Democratic,Protective,Shield,,
+New Mexico,SB 13,0.548394,0.450852,0.288,Unified Democratic,Protective,Shield,,
+New York,SB 1351,0.917055,0.58311,0.747,Unified Democratic,Protective,Shield,0.0,0.0
+New York,AB 1395,0.835378,0.818615,0.747,Unified Democratic,Protective,Proc_Expansion,0.0,0.0
+New York,SB 4007,0.843693,0.843693,0.747,Unified Democratic,Protective,Funding,0.0,0.0
+New York,AB 3003,0.584457,0.584457,0.747,Unified Democratic,Protective,Funding,0.0,0.0
+New York,AR 2311,0.846313,0.607655,0.747,Unified Democratic,Neutral,Constitutional,0.0,0.0
+New York,AR 671,0.879837,0.607655,0.747,Unified Democratic,Neutral,Constitutional,0.0,0.0
+New York,SB 1066,0.658852,0.58311,0.747,Unified Democratic,Protective,Shield,0.0,0.0
+North Carolina,SB 20,0.665492,0.560361,0.396,Divided,Restrictive,Proc_Ban,0.0,0.0
+North Carolina,HB 190,0.754484,0.560361,0.396,Divided,Restrictive,Proc_Ban,0.0,0.0
+North Carolina,HB 259,0.715083,0.700613,0.396,Divided,Restrictive,Funding,0.0,0.0
+North Dakota,SB 2225,0.761709,0.761709,0.174,Unified Republican,Restrictive,Definitional,0.0,0.0
+North Dakota,HB 1171,0.875289,0.654356,0.174,Unified Republican,Neutral,Criminal,0.0,0.0
+North Dakota,SB 2150,0.665492,0.654356,0.174,Unified Republican,Restrictive,Proc_Ban,0.0,0.0
+North Dakota,SB 2129,0.861999,0.684547,0.174,Unified Republican,Restrictive,Funding,0.0,0.0
+Ohio,HB 33,0.844111,0.844111,0.474,Unified Republican,Restrictive,Funding,0.0,0.0
+Ohio,SR 215,0.89442,0.89442,0.474,Unified Republican,Neutral,Constitutional,0.0,0.0
+Oklahoma,SB 293,0.775058,0.775058,0.221,Unified Republican,Restrictive,Proc_Ban,,
+Oregon,HB 2002,0.761904,0.761904,0.443,Unified Democratic,Protective,Shield,202212.0795472307,12.217077269664532
+Pennsylvania,HB 611,0.577315,0.577315,0.577,Divided,Restrictive,Funding,,
+Rhode Island,HB 5006,0.807848,0.807848,0.37,Unified Democratic,Protective,Funding,0.0,0.0
+South Carolina,SR 1346,0.866337,0.866337,0.294,Unified Republican,Protective,Definitional,0.0,0.0
+South Carolina,SB 474,0.594774,0.594774,0.294,Unified Republican,Restrictive,Criminal,0.0,0.0
+South Dakota,HB 1220,0.906477,0.906477,0.176,Unified Republican,Neutral,Shield,0.0,0.0
+Tennessee,HJR 133,0.865141,0.841292,0.274,Unified Republican,Restrictive,Definitional,202303.08957897825,12.217527238369097
+Tennessee,HB 90,0.93664,0.550065,0.274,Unified Republican,Restrictive,Funding,202303.08957897825,12.217527238369097
+Tennessee,SB 745,0.824574,0.550065,0.274,Unified Republican,Restrictive,Criminal,202303.08957897825,12.217527238369097
+Tennessee,HB 1895,0.866397,0.680063,0.274,Unified Republican,Neutral,Criminal,202303.08957897825,12.217527238369097
+Texas,SR 650,0.857442,0.857442,0.215,Unified Republican,Restrictive,Definitional,202303.08957897825,12.217527238369097
+Texas,HB 1575,0.850036,0.39187,0.215,Unified Republican,Neutral,Definitional,202303.08957897825,12.217527238369097
+Texas,SB 30,0.777572,0.777572,0.215,Unified Republican,Restrictive,Funding,202303.08957897825,12.217527238369097
+Texas,HB 1589,0.871347,0.325601,0.215,Unified Republican,Restrictive,Criminal,202303.08957897825,12.217527238369097
+Texas,SB 2376,0.87285,0.437345,0.215,Unified Republican,Restrictive,Funding,202303.08957897825,12.217527238369097
+Texas,SB 24,0.73848,0.39187,0.215,Unified Republican,Restrictive,Funding,202303.08957897825,12.217527238369097
+Texas,SB 840,0.872198,0.325601,0.215,Unified Republican,Neutral,Criminal,202303.08957897825,12.217527238369097
+Utah,HB 26,0.749382,0.749382,0.238,Unified Republican,Restrictive,Funding,202303.0895789782,12.217527238369097
+Utah,HB 297,0.808371,0.464587,0.238,Unified Republican,Restrictive,Proc_Ban,202303.0895789782,12.217527238369097
+Utah,SB 97,0.628044,0.628044,0.238,Unified Republican,Restrictive,Funding,202303.0895789782,12.217527238369097
+Utah,HB 467,0.703463,0.464587,0.238,Unified Republican,Restrictive,Proc_Ban,202303.0895789782,12.217527238369097
+Utah,SB 133,0.86424,0.78806,0.238,Unified Republican,Neutral,Funding,202303.0895789782,12.217527238369097
+Utah,SB 208,0.782674,0.527809,0.238,Unified Republican,Restrictive,Proc_Ban,202303.0895789782,12.217527238369097
+Utah,SB 39,0.915579,0.527809,0.238,Unified Republican,Restrictive,Funding,202303.0895789782,12.217527238369097
+Vermont,SB 37,0.513287,0.513287,0.301,Divided,Protective,Constitutional,0.0,0.0
+Virginia,HJR 594,0.846568,0.846568,0.363,Divided,Restrictive,Constitutional,606720.2986295095,13.315824819016374
+Virginia,SB 798,0.670548,0.660796,0.363,Divided,Restrictive,Proc_Ban,606720.2986295095,13.315824819016374
+Virginia,SB 975,0.528693,0.513239,0.363,Divided,Restrictive,Definitional,606720.2986295095,13.315824819016374
+Virginia,SB 1538,0.769777,0.513239,0.363,Divided,Protective,Funding,606720.2986295095,13.315824819016374
+Washington,HB 2115,0.897009,0.731628,0.54,Unified Democratic,Protective,Shield,0.0,0.0
+Washington,HB 1155,0.193251,0.193251,0.54,Unified Democratic,Protective,Shield,0.0,0.0
+Washington,SB 5242,0.792618,0.704702,0.54,Unified Democratic,Protective,Funding,0.0,0.0
+Washington,SB 5768,0.878504,0.704702,0.54,Unified Democratic,Protective,Shield,0.0,0.0
+Washington,SB 5187,0.577315,0.577315,0.54,Unified Democratic,Protective,Funding,0.0,0.0
+West Virginia,HB 2002,0.635363,0.635363,0.209,Unified Republican,Restrictive,Funding,0.0,0.0
+West Virginia,HB 3199,0.897782,0.736281,0.209,Unified Republican,Neutral,Definitional,0.0,0.0
+West Virginia,HB 3302,0.759168,0.759168,0.209,Unified Republican,Neutral,Criminal,0.0,0.0
+West Virginia,SB 552,0.793735,0.736281,0.209,Unified Republican,Restrictive,Criminal,0.0,0.0
+Wisconsin,SB 196,0.564001,0.564001,0.446,Divided,Restrictive,Proc_Ban,,
+Wyoming,HB 152,0.764302,0.441121,0.174,Unified Republican,Restrictive,Criminal,202210.05953206497,12.217067280077014
+Wyoming,SB 109,0.882095,0.441121,0.174,Unified Republican,Restrictive,Proc_Ban,202210.05953206497,12.217067280077014

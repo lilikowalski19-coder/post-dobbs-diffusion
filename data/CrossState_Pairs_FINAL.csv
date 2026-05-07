@@ -1,0 +1,49 @@
+bill_1,bill_2,similarity
+Nevada SB 370,Washington HB 1155,0.8067
+Colorado SB 188,Vermont SB 37,0.4867
+Missouri HB 1155,Virginia SB 975,0.4713
+California SB 345,Vermont SB 37,0.4653
+New Mexico SB 13,Vermont SB 37,0.4516
+Colorado SB 188,New Mexico SB 13,0.4473
+Missouri HB 1155,Wisconsin SB 196,0.436
+Pennsylvania HB 611,Washington SB 5187,0.4227
+Missouri HB 402,Virginia SB 975,0.4167
+California AB 100,New York AB 3003,0.4155
+Michigan HB 4949,Nevada SJR 7,0.4058
+Iowa HB 732,South Carolina SB 474,0.4052
+Arizona SB 1473,Mississippi HB 1671,0.3913
+New Mexico HB 7,Vermont SB 37,0.3727
+Alabama SB 261,Utah SB 97,0.372
+Connecticut SB 3,Washington HB 1155,0.3713
+Connecticut SB 3,Nevada SB 370,0.3683
+Arkansas HR 1010,West Virginia HB 2002,0.3646
+California SB 345,Colorado SB 188,0.36
+Colorado SB 188,Maryland SB 859,0.3597
+California AB 571,Vermont SB 37,0.3595
+New York AB 3003,Pennsylvania HB 611,0.345
+Maryland SB 859,New York SB 1066,0.3411
+California SB 345,New Mexico SB 13,0.3401
+Arizona HB 2564,Virginia SB 975,0.3382
+North Carolina SB 20,North Dakota SB 2150,0.3345
+California SB 887,Virginia SB 975,0.3326
+Illinois HB 1596,Virginia SB 798,0.3295
+North Dakota SB 2150,South Carolina SB 474,0.3294
+Arizona HB 2564,Missouri HB 402,0.3289
+Illinois HB 3762,New Jersey AB 5096,0.3285
+Colorado HB 1218,Vermont SB 37,0.3273
+Maryland SB 786,Vermont SB 37,0.3269
+California SB 887,Missouri HB 1155,0.3268
+Louisiana HB 1,Nebraska LB 814,0.3266
+California SB 101,New York AB 3003,0.3237
+Idaho SB 1044,Missouri HB 1155,0.3235
+Idaho SB 1044,New Jersey AB 5096,0.3202
+Nebraska LB 814,Pennsylvania HB 611,0.3199
+Maryland HB 200,Nebraska LB 814,0.3135
+Illinois HB 1596,New Jersey AB 5096,0.312
+Maryland SB 859,Vermont SB 37,0.3095
+Arizona HB 2564,Missouri HB 1155,0.3091
+California SB 345,New York SB 1066,0.3078
+California AB 100,Pennsylvania HB 611,0.3066
+California AB 1194,Connecticut SB 3,0.3065
+California AB 1194,Washington HB 1155,0.3056
+California SB 345,Maryland SB 859,0.3039
