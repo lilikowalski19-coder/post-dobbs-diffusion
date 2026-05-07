@@ -135,4 +135,4 @@ This reproduces `SimilarityMatrix_FINAL.csv` and `NoveltyScores_DEFINITIVE.csv`.
 
 Liliana Kowalski
 University of Wisconsin–Madison, Department of Political Science
-[lilikowalski19@gmail.com](mailto:lilikowalski19@gmail.com)
+[lilianakowalskipolicy@gmail.com](mailto:lilianakowalskipolicy@gmail.com)
