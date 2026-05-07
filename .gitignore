@@ -57,3 +57,5 @@ desktop.ini
 # Large data / raw inputs (not versioned)
 02_text_extraction/extracted_texts/
 *.pdf
+!figures/*.pdf
+!thesis/*.pdf
