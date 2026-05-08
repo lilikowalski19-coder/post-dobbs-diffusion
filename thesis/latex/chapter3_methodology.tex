@@ -1,0 +1,340 @@
+% CHAPTER 3: METHODOLOGY
+
+\chapter{Research Design and Methodology}
+\label{ch:methodology}
+
+\section{Methodological Foundations}
+
+This chapter describes how this study is designed and how the data were collected, processed, and analyzed. The central empirical task is measuring the degree to which abortion-related legislation enacted by U.S. state legislatures in calendar year 2023---the first full legislative session following \emph{Dobbs} v. \emph{Jackson Women's Health Organization}---shares textual language across state lines. By quantifying linguistic similarity across the full universe of enacted bills, the analysis reveals patterns of template borrowing, independent drafting, and coordinated policy adoption that binary measures of legislative diffusion cannot detect. The chapter proceeds as follows: Section~\ref{sec:corpus} describes the legislative corpus and data collection procedures; Section~\ref{sec:variables} defines 
+the dependent and independent variables; Section~\ref{sec:computation} details the computational implementation; and Section~\ref{sec:strategy} presents the three-stage empirical strategy.
+
+This study employs a three-stage computational design---an approach in which statistical text analysis methods are applied programmatically to the full corpus of enacted legislation rather than to selected cases. The approach addresses a fundamental limitation in policy diffusion research: traditional scholarship has primarily operationalized diffusion as binary adoption---a state either enacts a policy or does not---thereby obscuring the textual mechanics through which coordination actually occurs \parencite{wilkersonTracingFlowPolicy2015,bousheyPolicyDiffusionDynamics2010a}. Binary measures reveal \textit{whether} states adopt; they cannot reveal \textit{what} states adopt, \textit{from whom}, or at what degree of textual fidelity.
+
+Text-as-data methods address this limitation by treating legislative language as a quantifiable phenomenon. TF-IDF vectorization and cosine similarity analysis transform bill text into comparable numerical representations, enabling systematic measurement of novelty and borrowing across the complete universe of 2023-enacted abortion legislation. The approach is consistent with \citeauthor{grimmerTextDataPromise2013}'s (\citeyear{grimmerTextDataPromise2013}) methodological principles for computational text analysis in political science---measurement validity, replication, and explicit operationalization of theoretical constructs in quantitative terms. The specific three-stage design follows the framework developed in Wilkerson, Smith, and Stramp's ``Tracing the Flow of Policy Ideas in Legislatures'' (\citeyear{wilkersonTracingFlowPolicy2015}) and applied to state legislative diffusion in Linder et al.'s ``Text as Policy'' (\citeyear{linderTextPolicyMeasuring2020}).
+
+The design proceeds in three sequential stages. Stage One establishes baseline patterns of textual novelty and cross-state similarity across all 188 bills in the corpus, generating the descriptive foundation from which Stages Two and Three develop explanatory leverage. Stage Two employs bill-level OLS regression to test whether institutional capacity variables—legislative professionalism, partisan alignment, and policy mechanism type—predict cross-state novelty scores (H1–H4). Stage Three employs dyadic regression models at the state-pair level to test whether shared advocacy network ties predict pairwise textual similarity above and beyond institutional and geographic factors (H5–H6).
+
+The computational design is theoretically warranted for three reasons. First, it operationalizes the full continuum between wholesale template adoption and independent legislative innovation---moving beyond the binary adoption indicators that dominate the diffusion literature \parencite{berryStateLotteryAdoptions1990} to continuous measures of textual novelty that capture the \textit{degree} of borrowing. Second, it provides empirical traction on organizational influence theories by generating a measurable proxy---textual similarity---for the downstream output of template provision, enabling indirect assessment of legislative subsidy mechanisms that do not appear directly in campaign finance records \parencite{hertel-fernandezStateCapture2019, hallLobbyingLegislativeSubsidy2006a}. Third, it enables complete-universe analysis of the 188 bills meeting inclusion criteria (out of 190 abortion-related enactments identified in 2023)---rather than restricting inference to selected cases---addressing the selection bias concerns that attend case-study designs in diffusion research \parencite{boehmkeStatePolicyInnovativeness2012a}.
+
+The temporal scope---calendar year 2023---captures the first full legislative response window following \emph{Dobbs} v. \emph{Jackson Women's Health Organization}. Although the decision was handed down on June 24, 2022, most state legislatures had already adjourned their primary sessions by that date or were operating under severe time constraints that precluded comprehensive legislative action. Calendar year 2023 represents the first complete legislative cycle in which all state legislatures opened session with full knowledge of the new constitutional landscape, trigger laws already in effect, and pre-positioned advocacy infrastructure ready for deployment. This window thus captures coordinated mobilization under conditions of constitutional vacuum---rapid, network-mediated diffusion in the absence of established precedent, pervasive legal uncertainty, and heightened constituent pressure---before multi-year legal consolidation and electoral feedback could reshape coordination incentives. The decision to treat 2023 as a unified analytical window, rather than pooling 2022 and 2023, avoids the confound of comparing legislation enacted under emergency session conditions with legislation enacted through normal deliberative processes.
+
+\section{Data Collection and Corpus Construction}
+\label{sec:corpus}
+\subsection{Universe of Cases}
+\label{sec:universe}
+The analysis encompasses 190 abortion-related bills enacted across 46 states during 2023. Bill identification proceeded through systematic review of LegiScan databases, supplemented by state legislative archives and advocacy organization tracking systems \parencite{nash13StatesHave2022}. Inclusion criteria required: (1) enactment in 2023, (2) substantive provisions affecting abortion access or regulation, and (3) availability of full legislative text. Bills addressing abortion tangentially—such as omnibus health appropriations mentioning abortion funding without creating new policy—were excluded to maintain analytical focus on deliberate abortion policymaking.
+
+Of the 190 bills, 188 yielded valid novelty scores. Three exclusions account for the difference. Two Iowa bills (SB 514, SB 561) were excluded from novelty calculations on substantive grounds: both were omnibus health and human services appropriations acts exceeding 70 and 1,000 pages, respectively, in which abortion-related provisions appear as one component among extensive non-abortion health, veterans, and public assistance policy. Including these bills in TF-IDF similarity analysis would introduce substantial measurement error, as the vast majority of their textual content is unrelated to abortion policy and would suppress legitimate similarity scores with single-purpose abortion legislation. Their exclusion reflects application of the inclusion criterion---which requires that bills have \textbf{substantive provisions affecting abortion access or regulation} as their primary subject---rather than technical extraction failure. One Tennessee bill (SB 600, a local government funding restriction) was mislabeled in the original download as HB-90 and has been recoded accordingly; it is included in the corpus with a corrected identifier.
+
+Four states---Alaska, Georgia, Massachusetts, and New Hampshire---enacted no abortion-related legislation meeting the study's inclusion criteria in 2023 and are accordingly absent from the corpus. Because textual novelty and cosine similarity are defined only for enacted bills, these states are excluded from all similarity calculations; the inferential implications of this exclusion relative to binary diffusion designs are discussed in Chapter~6.
+
+\subsection{Data Quality Assurance}
+\label{sec:dataquality}
+Rigorous data quality procedures proved essential to this study's validity. During preliminary analysis, significant discrepancies emerged between expected and observed novelty distributions, prompting a systematic investigation that revealed two categories of data contamination: mislabeled PDF files and undetected duplicate observations. This section documents these problems and their remediation not as methodological shortcomings but as evidence of validation protocols necessary for reliable text-as-data research \parencite{grimmerTextDataPromise2013}.
+
+\subsubsection{Problems Identified Through Validation}
+
+\textbf{Problem One: Filename-Content Mismatch.} Automated PDF downloads from legislative databases occasionally produced files in which bill identifiers (state and bill number) did not match the textual content. A file labeled \texttt{California\_AB1.pdf} might contain text from Oregon HB 2, leading to spurious novelty inflation when computational algorithms compare mislabeled California text to actual California legislation. These mismatches arose from database synchronization errors, inconsistent naming conventions across state archives, and automated download script failures that were not immediately apparent in manual review.
+
+Another documented instance from the Tennessee corpus illustrates this problem: SB 600 (Public Chapter No.-168, a local government funding restriction enacted April 17, 2023) was downloaded under the filename \textbf{Tennessee\_HB90.pdf}, reflecting the bill's companion number rather than the enacted Senate bill number. The mislabeling was identified through manual comparison of filename metadata against document headers and corrected prior to analysis.
+
+\textbf{Problem Two: Duplicate Observations.} Legislative companion bills---identical or near-identical measures introduced simultaneously in both chambers---appeared as separate observations despite containing substantively identical text. Similarly, multiple versions of bills (introduced, committee-substituted, enrolled) were occasionally retained rather than consolidated into the final enacted text. These duplicates artificially inflated apparent novelty by treating substantively identical measures as independent observations.
+
+The cumulative impact of these problems was substantial. Initial analysis yielded a mean novelty of 0.939, with 102 bills (54\%) exceeding the 0.94 threshold. This distribution implied widespread independent innovation---a finding inconsistent with both theoretical expectations and qualitative evidence of template circulation \parencite{hertel-fernandezStateCapture2019, jansaCopyPasteLawmaking2019}. Crucially, only four high-similarity pairs ($>50\%$ textual overlap) were identified, suggesting minimal coordination despite extensive anecdotal evidence of organizational template distribution.
+
+\subsubsection{Correction Protocols}
+Remediation proceeded through three systematic procedures:
+\textbf{Manual PDF Verification.} All 192 PDF files underwent manual review comparing filename metadata to document content. First and last pages were examined to verify the state of origin, bill number, and enactment year. Cross-referencing with LegiScan metadata and official state legislative websites confirmed or corrected bill identifiers. Thirty-one files required correction, and fifteen duplicate files were removed.
+
+\textbf{Algorithmic Duplicate Detection.} A similarity threshold of 0.95 flagged potential duplicates for manual review. Bills exceeding this threshold were examined to distinguish true duplicates (identical text with different bill numbers) from companion bills serving distinct legislative functions. True duplicates were consolidated; substantively distinct companion bills were retained as separate observations given their different sponsors, voting coalitions, and institutional pathways.
+
+\textbf{Complete Re-Analysis.} Following PDF correction and duplicate removal, the entire computational pipeline was re-executed on the validated corpus: text re-extraction, TF-IDF re-vectorization, similarity matrix re-computation, and novelty score re-calculation. This wholesale re-analysis, rather than selective correction, ensures internal consistency across all measures.
+
+\subsubsection{Impact of Corrections}
+
+Table \ref{tab:correction_impact} quantifies the effect of data quality remediation on substantive findings.
+Because the theoretical framework concerns interstate diffusion, the corrected column reports cross-state novelty---the distance between each bill and its closest textual partner in a different state---rather than corpus-wide novelty, which is confounded by within-state companion legislation (Section~\ref{sec:computation}).
+\begin{table}[h]
+    \centering
+    \caption{Impact of Data Quality Corrections on Core Measures}
+    \label{tab:correction_impact}
+    \begin{tabular}{lrrr}
+    \toprule
+    \textbf{Metric} & \textbf{Original} & \textbf{Corrected} & \textbf{Change} \\
+    \midrule
+   Mean Cross-State Novelty & 0.939 & 0.769 & $-$18\% \\
+   High Novelty Bills ($\geq0.90$) & 102 (54\%) & 18 (9.6\%) & $-$82\% \\
+   Cross-State Pairs ($\geq0.50$) & 4 & 1 & $-$75\% \\
+   Cross-State Pairs ($\geq0.30$) & 4 & 48 & $+$1,100\% \\
+   Same-State Pairs & 0 & 14 & New \\
+   \bottomrule
+    \end{tabular}
+\end{table}
+
+Mean cross-state novelty declined by 18 percent, falling from 0.939 to 0.769---a shift from apparent originality to moderate cross-state borrowing. Eighteen bills (9.6 percent) exceeded the 0.90 novelty threshold, indicating genuine legislative independence from cross-state templates; the remaining 90 percent exhibited measurable textual overlap with legislation enacted elsewhere. At the 0.50 similarity threshold---the level validated against the Texas HB 2-Louisiana HB 388 benchmark---only one cross-state pair survived correction (Nevada SB 370 and Washington HB 1155, similarity 0.807). Lowering the threshold to 0.30, which captures selective provision borrowing alongside wholesale template adoption, revealed 48 cross-state pairs, rendering the interstate diffusion network analytically visible for the first time. Simultaneously, 14 same-state pairs with similarity exceeding 0.50 emerged---companion bills and legislative packages that reflect within-state coordination rather than interstate template transmission.
+
+The magnitude of these corrections necessitated re-interpretation of empirical patterns, discussed in Chapter 5.
+
+\subsection{Explanatory Variables}
+The variables described in this section serve as predictors in the Stage-2 regression models, with cross-state novelty scores (operationalized in Section~\ref{sec:novelty}) as the dependent variable. They are organized into three categories: institutional capacity measures, advocacy network indicators, and bill-level substantive controls. Each bill in the corpus---referred to throughout as a ``bill'' during the legislative process and as an ``enacted statute'' or ``act'' once signed into law, though the terms are treated synonymously here---includes the following variables used in subsequent analysis:
+
+
+\textbf{Temporal markers} include enactment date, date of introduction, and committee referral dates where available. The median enactment date is May 4, 2023, with a range from January 23 to December 31. The concentration of enactments in the first half of the year reflects the legislative calendar as much as political urgency: the majority of state legislatures hold their primary sessions between January and June, with many adjourning by spring or early summer. Enactments after July are disproportionately concentrated in states with year-round or extended session calendars---California, Michigan, New York, and Ohio---which continued refining and supplementing earlier enactments through the fall.
+
+\textbf{Institutional context variables} capture state-level characteristics theorized to affect innovation capacity and coordination propensity. Legislative professionalism is measured by the Squire Index, a revised measure of salary levels, session length, and staff resources relative to Congressional baselines \parencite{squireMeasuringStateLegislative2007, squireSquireIndexUpdate2024}.
+Partisan alignment derives from the National Conference of State Legislatures' classifications of unified government (single-party control of legislature and governorship) versus divided government. These measures enable testing whether professionalized legislatures with substantial staff capacity produce more novel legislation, or whether institutional resources facilitate efficient template deployment.
+
+\textbf{Advocacy network variables} measure organizational involvement in abortion policy diffusion through two mechanisms. State-level advocacy spending totals capture contributions from abortion-focused political action committees---including Planned Parenthood Action Fund affiliates, NARAL Pro-Choice America PACs, the Susan B. Anthony List, and National Right to Life Committee PACs---drawn from the Stanford Database on Ideology, Money in Politics, and Elections (DIME, Release 4.0), which aggregates campaign finance records from Federal Election Commission filings and state-level disclosure sources \parencite{bonica2024}. These totals measure the financial footprint of abortion advocacy in each state's political environment, providing an indicator of organizational presence independent of legislative text. Model-bill indicators flag enacted legislation exhibiting cosine similarity $\geq 0.50$ to known organizational template texts---specifically, Americans United for Life's annual \textit{Defending Life} legislative guide (restrictive templates), Alliance Defending Freedom's model statute library (restrictive), and the Center for Reproductive Rights' shield law framework (protective)---operationalizing organizational influence through legislative language rather than financial contributions alone \parencite{hertel-fernandezStateCapture2019,jansaCopyPasteLawmaking2019}.
+
+\textbf{Substantive bill coding} classifies each bill's policy direction, mechanism, and anticipated impact. Direction coding distinguishes protective legislation (expanding access, shielding providers, allocating funding for reproductive services) from restrictive legislation (banning procedures, criminalizing provision, reporting requirements without substantive access effects). Mechanism coding identifies the primary policy instrument---procedural restrictions, funding allocations, constitutional protections, definitional provisions, shield laws, criminalization measures, or procedural expansions. Strength of impact codes anticipated magnitude of access change on a three-point ordinal scale. These substantive codes enable analysis of whether coordination patterns vary across policy mechanisms or access directions.
+
+\section{Variables}
+\label{sec:variables}
+
+This section defines the variables used in the Stage-2 regression models. The dependent variable---cross-state novelty---measures each bill's textual originality relative to out-of-state legislation and is derived from the computational procedures described in Section~\ref{sec:computation}. The independent variables---legislative professionalism, partisan alignment, advocacy spending, and bill-level substantive characteristics---are introduced here with operationalization rationale; their full distributional properties appear in Chapter~4.
+
+\subsection{Textual Novelty Measurement}
+\label{sec:novelty}
+Novelty quantifies linguistic originality, defined formally as one minus maximum pairwise similarity\parencite{wilkersonTracingFlowPolicy2015, linderTextPolicyMeasuring2020}:
+
+\begin{equation}
+\text{Novelty}_i = 1 - \max_{j \neq i} \left( \text{CosineSimilarity}(i, j) \right)
+\end{equation}
+
+Where cosine similarity measures the angular distance between TF-IDF vectors representing bills $i$ and $j$. Higher novelty indicates greater linguistic divergence from all other bills in the corpus; lower novelty indicates substantial textual overlap with at least one other bill.
+
+A critical interpretive qualification warrants explicit acknowledgment at first operationalization: cosine similarity measures \textit{textual} distinctiveness, not \textit{substantive} innovation. A high novelty score indicates that a bill's language does not closely replicate language from other bills in the corpus; it does not establish that the bill introduces genuinely new policy mechanisms or enforcement frameworks. Conversely, low novelty scores reliably identify template borrowing---instances in which legislative language was adopted from external sources with limited modification---but cannot distinguish \textit{strategic replication} (deliberate adoption of a proven template for efficiency or legitimacy) from \textit{institutional mimicry} (copying in the absence of independent drafting capacity). This distinction informs the interpretation of exporter, importer, and reinforcer classifications throughout Chapter~4.
+
+This measure improves upon binary adoption indicators by capturing the continuum between wholesale template adoption and independent innovation. A bill with cross-state novelty of 0.05 exhibits $95\%$ similarity to its closest out-of-state textual partner, suggesting near-verbatim cross-state copying. A bill with cross-state novelty of 0.85 exhibits only $15\%$ similarity to its closest out-of-state match, suggesting independent drafting or substantial adaptation from any interstate source.
+
+This measure enables identification of whether 2023 legislation follows traditional diffusion patterns (with some states innovating while others adopt) or exhibits alternative coordination mechanisms.
+
+\subsection{Access Direction Classification}
+Legislative direction captures each bill's substantive effect on abortion access. The coding follows the morality policy tradition in which abortion policy is characterized by symbolic position-taking---legislators' stated intent frequently diverges from a bill's actual regulatory effect \parencite{mooneyInfluenceValuesConsensus2000, mooneyDoesMoralityPolicy2008a}.
+Accordingly, the coding protocol assesses what each bill \textit{does}---its anticipated effect on the conditions under which abortion services can be accessed---rather than what its sponsors claim it does. Direction is coded into three categories: protective (+1), restrictive ($-1$), and neutral (0), defined below.
+
+\textbf{Protective legislation} ($+1$) expands abortion access through multiple mechanisms: increasing provider eligibility, reducing procedural barriers, allocating state funding for services, establishing shield laws protecting out-of-state patients or in-state providers from extraterritorial prosecution, or codifying constitutional protections for reproductive decision-making. Examples include California's shield law (AB 1666) and Vermont's statutory protections (SB 37).
+
+\textbf{Restrictive legislation} ($-1$) constrains abortion access through bans (total or partial), increased criminalization of providers, elimination of public funding, mandatory waiting periods or counseling requirements, or facility regulations designed to reduce provider availability. Examples include Texas's multiple enforcement mechanisms (HB 1575, SB 24) and Tennessee's six-week ban (SB 745).
+
+\textbf{Neutral legislation} ($0$) affects abortion regulation without substantively changing access: administrative reporting requirements, technical corrections to existing statutes, or appropriations bills maintaining current funding levels without expansion or reduction. Examples include Missouri's licensing modifications (HB 1155), absent accompanying access restrictions.
+
+This classification requires interpretive judgment. All 190 bills were coded by the author through systematic review of each bill's PDF text, using keyword identification to locate provisions relevant to abortion access and regulation---
+including terms relating to gestational limits, provider certification requirements, funding restrictions or allocations, criminal penalties, shield protections, and healthcare access procedures. Direction was assessed based 
+on each bill's substantive effect on access conditions rather than its sponsors' stated intent or ideological framing. To assess coding consistency, a 20\% sample (38 of 190 bills) was re-coded independently at a later date, blind to the 
+original classifications. Agreement between coding rounds was strong (Cohen's $\kappa = 0.89$), indicating reliable application of the coding protocol across bill types and policy mechanisms. Cases of disagreement between rounds were 
+resolved by returning to the bill text, with final classification rationale documented in the project codebook.
+
+The distribution of bills across direction categories is reported in Chapter~4, where it is contextualized alongside other descriptive findings.
+
+\begin{table}[h]
+    \centering
+    \caption{Novelty Classification Thresholds}
+    \label{tab:novelty_thresholds}
+    \begin{tabular}{lcp{6.5cm}}
+    \toprule
+    \textbf{Category} & \textbf{Threshold} & \textbf{Interpretation} \\
+    \midrule
+    Highly Novel & $\geq$0.90  & Near-complete linguistic independence from all out-of-state bills; minimal detectable borrowing \\
+    Moderate Borrowing & 0.70--0.89  & Limited overlap; substantial independent drafting or adaptation to local context \\
+    Heavy Borrowing & 0.50--0.69  & Selective template use; core provisions borrowed with state-specific modifications \\
+    Very Heavy Borrowing & 0.30--0.49  & Substantial template adoption with limited state-specific modification \\
+    Near-Verbatim & $<$0.30     & Near-identical replication; language indistinguishable from direct copying \\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Observed Cross-State Novelty Distribution (N = 188)}
+\label{tab:novelty_distribution}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Category} & \textbf{Count} & \textbf{Percentage} & \textbf{Mean Novelty} \\
+\midrule
+Highly Novel ($\geq$0.90)         & 18  & 9.6\%  & 0.931 \\
+Moderate Borrowing (0.70--0.89)   & 125 & 66.5\% & 0.806 \\
+Heavy Borrowing (0.50--0.69)      & 43  & 22.9\% & 0.622 \\
+Very Heavy Borrowing (0.30--0.49) & 0   & 0.0\%  & ---   \\
+Near-Verbatim ($<$0.30)           & 2   & 1.1\%  & 0.193 \\
+\midrule
+\textbf{Total} & \textbf{188} & \textbf{100\%} & \textbf{0.769} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No bills in the corpus exhibit cross-state novelty scores between 0.30 and 0.50, reflecting the bimodal character of the distribution: bills cluster either above the 0.50 coordination threshold or below 0.30, consistent with the analytical distinction between selective provision borrowing and near-verbatim replication established in Section~\ref{sec:computation}.
+
+\subsection{State-Level Innovation Capacity}
+\label{state-level-inno-cap}
+States are classified by mean novelty scores into three analytical categories:
+
+\textbf{Innovators/Exporters} (top quartile, mean novelty $\geq 0.82$): States producing legislation textually distant from out-of-state counterparts, reflecting either deliberate innovation by well-resourced legislatures or informational isolation from external template infrastructure.
+
+\textbf{Mixed/Adapters} (interquartile range, mean novelty 0.60--0.81): States selectively borrowing templates while incorporating substantial state-specific provisions, drawing on organizational templates while adapting to local contexts.
+
+\textbf{Importers/Adopters} (bottom quartile, mean novelty $<0.60$): States relying heavily on external templates with limited customization, reflecting either constrained legislative capacity, strategic prioritization of legally vetted language, or active coordination through advocacy networks.
+This three-category classification follows from the cross-sectional similarity matrix and is reinterpreted in §5.7 to accommodate states whose textual centrality (exporter function) does not track their mean novelty (exporter status).
+
+This classification enables systematic testing of how institutional capacity, partisan control, and advocacy network involvement predict innovation versus adoption patterns.
+
+This three-category classification follows from the cross-sectional similarity matrix and is reinterpreted in Section~\ref{sec:exporter-importer-reinforcer} to accommodate states whose textual centrality (exporter \textit{function}) does not track their mean novelty (exporter \textit{status}).
+
+\subsection{Policy Mechanism Typology}
+\label{policymechanism}
+The mechanism variable captures each bill's primary policy instrument, coded according to the following typology developed from abortion policy scholarship~\parencite{mooneyLegislativeMoralityAmerican1995,goodwinAbortionLawAmerica2021}.
+
+\begin{itemize}
+    \item[\textbf{A.}] \textbf{Procedural Ban/Restriction:} Gestational limits, mandatory waiting periods, parental notification requirements, ultrasound mandates
+    \item[\textbf{B.}] \textbf{Funding/Resource Allocation:} Appropriations for services, Medicaid coverage, prohibitions on public funding, grant programs
+    \item[\textbf{C.}] \textbf{Constitutional Ballot:} Citizen initiatives, legislative referrals to ballot, constitutional amendments
+    \item[\textbf{D.}] \textbf{Definitional/Administrative/Reporting:} Gestational age calculations, personhood definitions, statistical reporting requirements
+    \item[\textbf{E.}] \textbf{Shield/Protections:} Interstate legal protections, provider shields, patient privacy safeguards
+    \item[\textbf{F.}] \textbf{Criminalization/Liability:} Criminal penalties for providers, civil liability provisions, enforcement mechanisms
+    \item[\textbf{G.}] \textbf{Procedural Expansion:} Increased provider eligibility, reduced regulatory barriers, streamlined access procedures
+\end{itemize}
+
+\section{Computational Text Analysis: Implementation}
+\label{sec:computation}
+\subsection{Text Extraction and Preprocessing}
+
+Legislative text extraction employed the \texttt{pdfplumber} library (version 0.10+) for Python, selected for superior handling of multi-column legislative documents compared to alternatives such as \texttt{PyPDF2}. Extraction protocols prioritized substantive bill language while excluding boilerplate: enacting clauses, legislative metadata, formatting codes, page numbers, and headers were systematically removed through regex pattern matching.
+
+Preprocessing normalized text through multiple stages following established text-as-data protocols~\parencite{grimmerTextDataPromise2013}:
+\begin{enumerate}
+    \item \textbf{Tokenization:} Conversion to lowercase, word-boundary segmentation
+    \item \textbf{Stopword removal:} Elimination of common English words (articles, prepositions, auxiliary verbs) plus legal boilerplate terms (``whereas,'' ``be it enacted,'' ``section'')
+    \item \textbf{Stemming:} Reduction to linguistic roots (``providing,'' ``provider,'' ``provides'' $\rightarrow$ ``provid'') to capture semantic rather than purely lexical similarity\footnote{Porter stemming reduces tokens to morphological roots that may not present themselves be words; "provid" is the stem common to "providing," "provider," and "provides," not a misspelling.}
+    \item \textbf{Punctuation stripping:} Removal of non-alphanumeric characters except where semantically meaningful (e.g., ``pre-viability'' retained as single token)
+\end{enumerate}
+
+As documented in Section~\ref{sec:universe}, two Iowa bills (SB~514, SB~561) were excluded on substantive grounds, and one Tennessee bill (SB~600) was recoded following filename correction, yielding 188 bills with valid novelty scores from a universe of 190.
+
+\subsection{TF-IDF Vectorization}
+\label{tfidf}
+Term Frequency-Inverse Document Frequency (TF-IDF) transforms text into numerical vectors suitable for similarity calculation \parencite{wilkersonTracingFlowPolicy2015, linderTextPolicyMeasuring2020}. The measure captures term importance by weighting frequency within a document against rarity across the corpus:
+
+\begin{equation}
+    \text{TF-IDF}(t, d, D) = \text{TF} (t, d) \times
+    \log\left(\frac{|D|}{\text{DF}(t)}\right)
+\end{equation}
+
+where $\text{TF}(t, d)$ represents term $t$'s frequency in document $d$ (normalized by document length), $|D|$ denotes corpus size (188 bills), and $\text{DF}(t)$ counts documents containing term $t$. Terms appearing in all documents receive zero weight (uninformative common words), while terms appearing in a few documents receive high weights (distinctive policy language).
+
+Implementation employed \texttt{scikit-learn}'s
+\texttt{TfidfVectorizer} with the following parameters:
+\begin{itemize}
+    \item \texttt{min\_df=2}: Terms appearing in fewer than two documents excluded as idiosyncratic
+    \item \texttt{max\_df=0.8}: Terms appearing in more than 80\% of documents excluded as generic
+    \item \texttt{ngram\_range=(1, 2)}: Unigrams and bigrams included to capture multi-word legal phrases (e.g., "informed consent," "fetal heartbeat," "previability abortion")
+\end{itemize}
+
+The resulting TF-IDF matrix contains 188 rows (bills) and approximately 104,445 columns (unique n-grams), with each cell representing a term's weighted importance in a given bill. This high-dimensional representation enables precise similarity measurement while controlling for document length and common legal terminology.
+
+\subsection{Cosine Similarity and Novelty Derivation}
+
+Cosine similarity measures the angular distance between two TF-IDF vectors, ranging from 0 (no shared vocabulary) to 1 (identical vectors). The full formula and derivation are provided in Appendix~B; the key measurement property for interpretation is that the metric weights term importance through TF-IDF, captures multi-word legal phrases through n-gram inclusion, and remains robust to document length variation---critical given that bills range from single-page resolutions to multi-section statutes.
+
+Pairwise comparison of all 188 bills yields a 188 x 188 symmetric similarity matrix from which two novelty measures are derived. Corpus novelty equals one minus a bill's maximum pairwise similarity to any other bill in the dataset, capturing overall textual distinctiveness, including within-state companions. Cross-state novelty equals one minus a bill's maximum similarity to any bill enacted in a different state, isolating interstate template transmission from within-state legislative packaging.
+
+Cross-state novelty serves as the primary analytical measure throughout this thesis. The theoretical framework concerns interstate policy diffusion---how legislative templates travel across state boundaries through organizational networks---and 63 percent of bills had a same-state bill as their closest corpus-wide partner. These within-state matches predominantly reflect companion legislative packages rather than the interstate coordination the research questions address. Cross-state novelty removes this confound by restricting the comparison set to bills from other states, directly operationalizing the mechanism that \textcite{walkerDiffusionInnovationsAmerican1969}, \textcite{berryStateLotteryAdoptions1990}, and \textcite{shipanMechanismsPolicyDiffusion2008a} theorize. Corpus novelty is reported as a robustness measure in Appendix B.
+
+\subsection{Method Validation Protocol}
+Computational text analysis requires empirical validation demonstrating that similarity measures accurately detect textual overlap when applied to legislative language. The TF-IDF implementation was validated against Texas House Bill 2 (2013) and Louisiana House Bill 388 (2014)---legislative texts for which independent judicial assessment established substantive equivalence. Justice Stephen Breyer characterized the Louisiana statute as ``almost word-for-word identical'' to the Texas law in \emph{June Medical Services v. Russo}, 140 S. Ct. 2103, 2121 (2020), providing external verification enabling assessment of whether computational similarity measures align with authoritative determinations of textual correspondence.
+
+The validation protocol serves three methodological functions. First, it confirms that TF-IDF cosine similarity accurately detects linguistic overlap in legislative texts containing substantive shared provisions, establishing that the computational approach operates as theoretically intended when applied to policy language rather than general text corpora. Second, it reveals measurement properties under realistic conditions: bills combining template provisions with unique additional content, varying substantially in length, and embedding shared language within different structural frameworks. Third, it provides empirical grounding for threshold selection and similarity score interpretation, enabling principled distinction between comprehensive template borrowing and selective provision adoption.
+
+The validation employs multiple complementary similarity metrics---character-level sequential comparison, Jaccard vocabulary overlap coefficient, TF-IDF weighted cosine similarity---applied at both full-document and provision-specific levels. This multi-metric approach enables assessment of TF-IDF's measurement properties relative to alternative quantification strategies while isolating the effects of bill structure, length disparity, and provision embedding on similarity detection. Texas HB2 and Louisiana HB388 exhibit substantial structural variation despite substantive equivalence: the Texas bill (29,352 characters) addresses multiple abortion restrictions, including gestational limits, clinic regulations, and admitting privilege requirements, while Louisiana HB388 (9,064 characters) focuses primarily on admitting privileges with minimal additional content. This 3:1 length disparity tests whether TF-IDF accurately detects coordination when template language constitutes different proportions of total legislative text.
+
+Validation results establish that full-document TF-IDF similarity produces conservative estimates when bills combine shared template provisions with unique additional content. The measure underestimates coordination relative to provision-level character comparison, generating lower-bound similarity scores that privilege comprehensive template borrowing over selective provision adoption. This conservative measurement property operates in a theoretically informative direction: high-similarity scores require extensive shared language across multiple bill sections, as isolated provision borrowing alone generates moderate rather than high similarity values.
+
+These validation exercises provide an empirical foundation for the 0.50 threshold employed in high-similarity pair classification. The threshold identifies comprehensive template borrowing across multiple bill sections while potentially missing more selective provision-level coordination---a conservative classification prioritizing precision over sensitivity. Bills scoring over 0.50 exhibit extensive linguistic overlap unlikely to arise from independent drafting or incidental convergence on common legal phrasing. Bills scoring 0.30-0.50 may contain substantially identical provisions for specific mechanisms while differing in scope, structure, or additional content. Bills scoring below 0.30 suggest substantive legislative independence or extensive state-specific customization, though selective borrowing of narrow provisions remains possible.
+
+Complete validation procedures---including side-by-side textual comparisons, multiple similarity metric results, normalization protocols, and systematic assessment of metric performance across full-document and provision-level analysis---are documented in Appendix B. These materials enable independent verification of legislative language while providing interpretive guidance for similarity score thresholds and coordination detection.
+
+\subsection{High-Similarity Pair Identification}
+Bills exhibiting similarity exceeding 0.50 are classified as high-similarity pairs, indicating potential coordination \parencite{jansaCopyPasteLawmaking2019}. This threshold reflects a methodological choice balancing sensitivity and specificity rather than an established disciplinary convention: lower thresholds generate excessive false positives from shared legal boilerplate, while higher thresholds miss substantive borrowing with state-specific modifications. The 0.50 threshold was validated against the Texas HB2-Louisiana HB388 benchmark (see Section~\ref{sec:computation}, Method Validation Protocol), where Justice Breyer's characterization of the bills as "almost word-for-word identical" provides external confirmation of what high similarity should detect.
+
+High-similarity pairs are further classified as:
+\begin{itemize}
+    \item \textbf{Cross-state pairs:} Bills from different states exhibiting high similarity, indicating horizontal diffusion or shared organizational templates
+    \item \textbf{Same-state pairs:} Bills from the same state exhibiting high similarity, indicating within-state bill multiplication through companion legislation or sequential enactments
+\end{itemize}
+
+This classification enables network analysis of diffusion pathways and organizational coordination patterns. For cross-state analysis, a secondary threshold of 0.30 identifies pairs exhibiting selective provision borrowing---partial template adoption in which states incorporate specific clauses or frameworks without reproducing entire bills. The 0.30 threshold was calibrated against the empirical distribution: below this value, shared similarity predominantly reflects common legal boilerplate rather than substantive policy convergence. At the 0.30 threshold, 48 cross-state pairs emerge, providing sufficient network density for the diffusion pathway analysis developed in Chapter~4.
+
+The thesis applies two distinct similarity thresholds for two distinct analytical purposes. The 0.50 threshold described in this section is the formal classification boundary for "high-similarity" coordination candidates and corresponds to the "heavy borrowing" category in Table 3.2. The 0.40 threshold employed in Section~\ref{sec:coordination} is a more permissive surface for inspecting candidate cross-state pairs in detail; it identifies a broader set of dyads warranting case-level scrutiny without making formal coordination claims about each. Only the Nevada SB 370 - Washington HB 1155 pair clears the 0.50 formal threshold; the remaining nine pairs reported in Table 4.5 fall between 0.40 and 0.49 and represent partial rather than comprehensive template overlap.
+
+\section{Empirical Strategy: Three-Stage Sequential Design}
+\label{sec:strategy}
+
+\subsection{Stage One: Quantitative Text Analysis}
+The first stage establishes baseline patterns across the complete universe of 2023 abortion legislation. Computational analysis addresses four empirical questions:
+
+\textbf{Distribution of novelty:} Does textual originality vary systematically across states, or does 2023 legislation exhibit uniform borrowing patterns? Descriptive statistics and distributional analysis test whether the data support traditional diffusion models (predicting variation through experimentation) or alternative coordination mechanisms (predicting uniformity through template deployment).
+
+\textbf{State-level patterns:} Do states exhibit differential roles as exporters, adapters, or importers? State-level aggregation of mean novelty scores enables classification of innovation capacity and testing whether institutional characteristics predict diffusion roles \parencite{walkerDiffusionInnovationsAmerican1969, desmaraisPersistentPolicyPathways2015}.
+
+\textbf{Coordination networks:} Which bill pairs exhibit high textual similarity indicative of template circulation? High-similarity pair identification enables network analysis of diffusion pathways, distinguishing cross-state horizontal coordination from within-state bill multiplication.
+
+\textbf{Substantive patterns:} Does novelty vary by policy direction or mechanism? Descriptive analysis examines whether the two legislative coalitions this study identifies---the \textit{protective coalition} (states enacting legislation expanding or safeguarding abortion access) and the \textit{restrictive coalition} (states enacting legislation constraining abortion access)---employ different coordination strategies, as predicted by the coalition asymmetry argument developed in Chapter~2.
+
+This stage generates hypotheses for subsequent testing: Do professionalized legislatures produce more novel legislation \parencite{squireMeasuringStateLegislative2007}? Do states with unified partisan control adopt more templates from ideologically aligned sources? Do advocacy networks reduce novelty by providing ready-made language \parencite{hertel-fernandezStateCapture2019}?
+
+\subsection{Stage Two: Bill-Level OLS Regression (H1-H4, H6)}
+\label{sec:stage2}
+
+Bill-level hypotheses (H1–H4 and H6) are tested via OLS regression with cross-state novelty as the dependent variable:
+\begin{equation}
+    \text{Novelty}_i = \beta_1\,\text{Squire}_i + \beta_2\,\text{PartisanAlign}_i + \beta_3\,\text{MechanismType}_i + \mathbf{X}_i\boldsymbol{\gamma} + \varepsilon_i
+\end{equation}
+
+where $\text{Squire}_{i}$ is the continuous Squire Index score for the state enacting bill $i$; $\text{PartisanAlign}_{i}$ is a binary indicator for unified government; $\text{MechanismType}_{i}$ is a set of indicators for the policy mechanism typology defined in Section 3.3.4; and $\mathbf{X}_i$ includes bill-level controls for access direction and enactment timing. Standard errors are clustered by state.
+
+The second stage employs statistical models to test how institutional capacity and advocacy networks predict textual patterns. Three dependent variables capture different dimensions of borrowing:
+
+The dependent variable is the cross-state novelty score (continuous, 0--1) operationalizing each bill's linguistic originality relative to out-of-state legislation. Independent variables operationalize theoretical mechanisms:
+
+The institutional predictors are legislative professionalism (measured by the Squire Index) and partisan alignment (unified versus divided government); the advocacy predictor is state-level PAC spending from the DIME database. Each is defined below.
+
+\textbf{Legislative professionalism} (Squire Index, continuous 0--1) measures institutional capacity for independent policy development \parencite{squireMeasuringStateLegislative2007, squireSquireIndexUpdate2024}. Theory suggests two competing predictions: professionalized legislatures may innovate more due to staff capacity and expertise, or may coordinate more efficiently due to stronger ties to national networks.
+
+\textbf{Partisan alignment} (binary: unified/divided) captures ideological constraint. Unified governments face fewer institutional veto points, potentially enabling rapid template deployment without negotiation or compromise.
+
+\textbf{Advocacy involvement} (continuous: state-level PAC contributions) operationalizes organizational influence. However, preliminary analysis reveals minimal financial connections between federal abortion PACs and state legislators, motivating investigation of non-financial coordination mechanisms \parencite{baumgartner_jones_1993, hallLobbyingLegislativeSubsidy2006a}.
+
+Models control for state-level characteristics: population size, urbanization, historical abortion rates, and baseline abortion restrictions pre-\emph{Dobbs}. Standard errors are clustered by state to account for within-state correlation across multiple bills.
+
+Stages 2 and 3 together test the observable implications of coordination theories while acknowledging the inferential limitations of observational data: correlation between advocacy network indicators and textual similarity does not establish the causal mechanisms through which coordination occurs. Identifying those mechanisms---the specific organizational pathways, communication networks, and template distribution channels that produce observed textual patterns---would require process-tracing methods including elite interviews and comparative case analysis, discussed as future research in Chapter 6. The present study supplements regression analysis with documentary evidence from legislative records, organizational publications, and media reporting to provide contextual grounding for interpreting statistical patterns in Section~\ref{sec:limitations}.
+
+\subsection{Stage Three: Dyadic Regression (H5)}
+\label{sec:stage3}
+
+
+\begin{equation}
+\begin{aligned}
+\text{MaxSim}_{ij} = \beta_0 &+ \beta_1\,|\Delta\text{Squire}|_{ij} + \beta_2\,\text{Contiguous}_{ij} + \beta_3\,\ln(\text{BillCountProduct})_{ij} \\
+&+ \beta_4\,\text{BothProtective}_{ij} + \beta_5\,\text{BothRestrictive}_{ij} \\
+&+ \beta_6\,\text{PAC\_Jaccard}_{ij} + \varepsilon_{ij}
+\end{aligned}
+\end{equation}
+
+where $i$ and $j$ denote state dyads; $|\Delta\text{Squire}|_{ij}$ is the absolute difference in Squire Index scores (institutional capacity asymmetry); $\text{Contiguous}_{ij}$ is a binary adjacency indicator; $\ln(\text{BillCountProduct})_{ij}$ controls for the mechanical relationship between legislative volume and the probability of a high-similarity match; $\text{BothProtective}_{ij}$ and $\text{BothRestrictive}_{ij}$ identify dyads in which both states' enacted legislation leans in the same access direction (reference: mixed or neutral dyads); and $\text{PAC\_Jaccard}_{ij}$ is the Jaccard similarity of the sets of abortion-related PAC donor organizations active in each state's 2022 legislative cycle, measured from the DIME database. Inference uses Bell--McCaffrey CR2 cluster-robust standard errors with Satterthwaite-approximated degrees of freedom, implemented via \texttt{estimatr::lm\_robust}.
+
+Institutional capacity theory \parencite{squireMeasuringStateLegislative2007,jansaCopyPasteLawmaking2019} predicts $\beta_1 < 0$: dyads with greater capacity asymmetry should exhibit higher similarity, as lower-capacity states borrow from higher-capacity partners. Regional diffusion theory \parencite{walkerDiffusionInnovationsAmerican1969} predicts $\beta_2 > 0$: contiguous dyads should exhibit higher similarity. Legislative subsidy theory \parencite{hallLobbyingLegislativeSubsidy2006a,hertel-fernandezStateCapture2019} predicts $\beta_6 > 0$ independently of coalition indicators, indicating that advocacy network co-presence shapes textual similarity conditional on institutional capacity and coalition alignment. A finding in which $\beta_6$ remains statistically and substantively significant after controlling for coalition direction would provide the most direct evidence against a purely institutional or purely coalitional account of post-\textit{Dobbs} diffusion. H6, which concerns whether the advocacy effect operates through informational rather than financial channels, is tested at the bill level in Stage 2 (§4.6) and is assessed against the dyadic results in Stage 3 (§4.9.3).
+
+\section{Limitations and Scope Conditions}
+\label{sec:limitations}
+Four limitations circumscribe this study's inferential scope; each is addressed in full in Chapter~6.
+
+\textbf{Temporal scope --} The dataset captures calendar year 2023 exclusively, precluding assessment of whether observed coordination patterns represent transient crisis response or durable institutional arrangements. Three longitudinal trajectories---persistence, evolution, and dissolution---generate testable predictions for extension to 2024--2026 legislation.
+
+\textbf{Textual versus strategic coordination --} Cosine similarity measures linguistic overlap but cannot distinguish direct coordination, common organizational sourcing, and parallel convergence as generative mechanisms. Documentary evidence provides partial leverage; definitive mechanism identification requires the process-tracing methods discussed as future research in Chapter 6.
+
+\textbf{Measurement validity --} TF-IDF captures lexical rather than semantic equivalence, potentially missing coordination achieved through synonymous terminology or restructured phrasing. Manual review of high-similarity pairs and convergent validity tests against substantive coding partially address this constraint.
+
+\textbf{Causal inference --} The observational design enables the identification of correlations but cannot establish causal mechanisms linking institutional characteristics, advocacy involvement, and textual coordination. State-clustered standard errors and extensive controls address 
+confounding, but residual endogeneity concerns persist. Definitive causal identification would require process tracing or quasi-experimental variation, beyond this study's scope.
+
+\section{Replication Materials}
+Complete data provenance, software specifications, code repository structure, codebook documentation, and analytical reproducibility standards are provided in Appendix~B.

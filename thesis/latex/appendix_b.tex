@@ -1,0 +1,81 @@
+\chapter{Computational Procedures and Replication Materials}
+\section{Reliability, Replicability, and Transparency}
+Methodological transparency and independent verification constitute core commitments enabling cumulative knowledge development. All materials necessary for exact replication are documented through comprehensive protocols, with data and code archived for public access.
+
+\subsection{Data Provenance and Availability}
+Legislative text sources derive exclusively from publicly accessible databases and official state archives:
+
+\begin{itemize}
+    \item \textbf{Bill texts:} LegiScan database (\texttt{https://legiscan.com}) supplemented by official state legislative websites for bills unavailable through LegiScan
+    \item \textbf{Partisan alignment:} National Conference of State Legislatures classifications of unified versus divided government (\texttt{https://www.ncsl.org})
+    \item \textbf{Legislative professionalism:} Squire Index scores\parencite{squireSquireIndexUpdate2024} with 2024 update
+    \item \textbf{Advocacy spending:} Federal Election Commission records accessed through Stanford Database on Ideology, Money in Politics, and Elections (DIME), Release 3.0
+    \item \textbf{Policy tracking:} Guttmacher Institute state policy databases cross-references with Nash et al.\parencite{nash13StatesHave2022} classifications
+\end{itemize}
+
+The complete validated dataset--including corrected PDF files, extracted text, TF-IDF matrices, similarity scores, novelty measures, and substantive coding---is available from the author upon request.
+
+\subsection{Computational Replication Materials}
+All computational procedures are fully specified through documented code with version control:
+
+\textbf{Software environmental specifications:}
+\begin{itemize}
+    \item Python 3.11.4
+    \item \texttt{pdfplumber} 0.10.2 (PDF text extraction)
+    \item \texttt{scikit-learn} 1.3.0 (TF-IDF vectorization, cosine similarity)
+    \item \texttt{pandas} 2.0.3 (data manipulation)
+    \item \texttt{numpy} 1.24.3 (numerical computation)
+    \item \texttt{nltk} 3.8.1 (natural language preprocessing)
+\end{itemize}
+
+        \textbf{Code repository structure:} GitHub repository (https://github.com/lilikowalski19-coder/post-dobbs-diffusion.git) contains:
+\begin{enumerate}
+    \item \texttt{01\_data\_collection/}: PDF download scripts with error logging, validation protocols, duplicate detection algorithms
+    \item \texttt{02\_text\_extraction/}: Extraction procedures, boilerplate removal patterns, preprocessing pipelines
+    \item \texttt{03\_tfidf\_analysis/}: Vectorization implementation, parameter specifications, similarity matrix computation
+    \item \texttt{04\_novelty\_calculations}: Pairwise similarity measurement, novelty derivation, high-similarity pair identification
+    \item \texttt{05\_validation/}: Data quality checks, correction logs, reanalysis procedures
+    \item \texttt{06\_coding/}: Substantive variable codebooks, intercoder reliability testing, consensus resolution documentation
+\end{enumerate}
+
+Each script includes inline documentation specifying parameter choices, algorithmic implementations, and decision rules. README files document execution order, input requirements, and expected outputs, enabling step-by-step replication.
+
+\subsubsection{Data Source Documentation}
+
+All data sources employed in this study derive from publicly accessible databases and archives not requiring Institutional Review Board approval: legislative text from LegiScan, campaign finance records from FEC/DIME, institutional measures from published indices, and documentary evidence from organizational publications, legislative testimony transcripts, and media reporting. Complete bibliographic information and archival locations are documented in appendices.
+
+\subsection{Intercoder Reliability and Validation}
+Substantive coding reliability is established through systematic protocols:
+\textbf{Codebook development:} Detailed operational definitions specify decision rules for direction coding (protective/restrictive/neutral), mechanism classification (seven categories), and impact strength (three-point scale). Codebooks include boundary cases, resolution procedures for ambiguous bills, and worked examples illustrating application.
+
+\textbf{Coding procedure and self-audit}: All substantive coding was conducted by the author. To assess coding consistency, a 20\% sample of bills (38 of 191) was re-coded independently at a later date, blind to the original classifications. Agreement between the original and re-coded classifications was assessed using Cohen's $\kappa$: direction coding ($\kappa = 0.89$), mechanism classification ($\kappa = 0.82$), impact strength ($\kappa = 0.76$). Cases of disagreement between coding rounds were resolved by returning to the bill text, with the rationale for final classifications documented in the project codebook.
+
+\textbf{Validation against external sources:} Direction coding was cross-validated against Guttmacher Institute classifications and Nash et al. policy categorizations. High agreement ($>90\%$) with established policy tracking organizations provides convergent validity for substantive measures.
+
+\subsection{Analytical Reproducibility Standards}
+Beyond data and code availability, the study implements additional transparency measures supporting analytical reproducibility:
+
+\textbf{Preprocessing decisions documented:} All text normalization choices (stopword lists, stemming algorithms, punctuation handling) are specified with justifications. Sensitivity analyses test robustness to alternative specifications (Porter versus Snowball stemming, varying stopword lists, alternative n-gram ranges).
+
+\textbf{Threshold justifications:} The 0.50 similarity threshold for high-similarity pair classification reflects empirical exploration documented in appendices. Threshold variation analysis (0.40, 0.50, 0.60) demonstrates stability of coordination network identification while balancing sensitivity and specificity.
+
+\textbf{Null findings reported:} Variables hypothesized to predict coordination but showing null results are reported transparently rather than suppressed. PAC contribution measures, for instance, exhibit minimal correlation with textual similarity---a substantively important null finding contradicting campaign finance theories of legislative influence.
+
+\textbf{Alternative specifications tested:} Regression models are estimated under multiple specifications (varying control variables, alternative clustering approaches, robustness to outlier exclusion) with results reported in methodological appendices. Consistency across specifications strengthens inferential confidence; specification-dependent findings are flagged as preliminary.
+
+The comprehensive transparency infrastructure enables independent researchers to verify computational procedures, replicate statistical analyses, assess alternative interpretations, and extend methods to additional policy domains or temporal periods. The goal is not merely reproducibility of specific findings but transferability of analytical frameworks to cumulative research programs in policy diffusion, text-as-data methods, and organizational influence on legislative processes.
+
+\section{Analytical Workflow Integration}
+
+The two-stage sequential design operates through iterative refinement rather than strict linear progression. Each stage generates outputs informing subsequent analysis while remaining responsive to emergent findings requiring methodological adjustment.
+
+Stage 1 quantitative analysis establishes empirical patterns necessitating theoretical explanation: widespread but differentiated cross-state borrowing (two-thirds of bills in the moderate range, with 48 cross-state pairs at the 0.30 threshold), predominantly within-state high-similarity pairing (14 of 15 pairs above 0.50 are same-state), and state-level heterogeneity in borrowing intensity. These patterns generate specific hypotheses tested in Stage 2: Do institutional variables predict state-level cross-state novelty?
+
+Stage 2 regression results identify anomalous cases warranting further investigation: high-capacity states exhibiting heavy borrowing despite institutional resources enabling innovation; coordination pairs lacking financial linkages despite campaign finance theories predicting monetary influence. Documentary evidence from legislative records, organizational publications, and media coverage provides contextual grounding for interpreting these anomalies, distinguishing between competing explanations that regression coefficients alone cannot adjudicate.
+
+This integrated workflow proceeds from computational pattern identification through statistical hypothesis testing to documentary interpretation---a sequential design in which quantitative patterns motivate explanatory analysis, and documentary evidence enriches the interpretation of statistical results.
+
+\subsection{Cosine Similarity: Full Derivation}
+\begin{equation}
+\text{Cosine Similarity}(\mathbf{A}, \mathbf{B}) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \|\mathbf{B}\|} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}
+\end{equation}

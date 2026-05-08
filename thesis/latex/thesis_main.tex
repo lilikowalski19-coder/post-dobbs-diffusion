@@ -1,0 +1,862 @@
+% ============================================================
+% thesis_main.tex
+% Networks of Influence: Legislative Text Diffusion in
+% State Reproductive Policy After Dobbs
+% Liliana Kowalski — UW-Madison Political Science
+%
+% CITATION STYLE: APSA Author-Date Parenthetical
+%   In-text:       \parencite{key}        → (Author Year)
+%                  \parencite[p.~12]{key} → (Author Year, p. 12)
+%                  \textcite{key}         → Author (Year)
+%   Discursive fn: \footnote{...}         → keep for substantive notes;
+%                  use \parencite{} inside for any embedded citations
+%   BANNED:        \footnote{\cite{key}}  → convert ALL to inline \parencite{}
+%                  "see n. X" cross-refs  → replace with full \parencite{} repeated
+% ============================================================
+\listfiles  % put this before \documentclass
+\documentclass[12pt]{report}
+\usepackage{guthesis}
+
+% CORE FORMATTING
+% ============================================================
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5\baselineskip plus 2pt}
+
+% Widow/orphan control
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+
+% ============================================================
+% PACKAGES — each loaded exactly once
+% ============================================================
+
+% Mathematics
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Graphics and figures
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\graphicspath{{ch_findings/}}
+
+% TikZ and plots
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{etoolbox}
+\appto\TPTnoteSettings{\footnotesize}
+\renewcommand{\TPTminimum}{0pt}
+\usepackage{dcolumn}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{lscape}
+\usepackage{longtable}
+
+% URLs
+\usepackage{url}
+
+% Typography and layout
+\usepackage{parskip}
+\usepackage{titlesec}
+
+% Algorithms (retain if needed for computational methods chapter)
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Footnote formatting: flush with margin, hanging indent
+\usepackage[hang,flushmargin]{footmisc}
+\setlength{\skip\footins}{1.5\baselineskip}
+\addtolength{\footnotesep}{2pt}
+
+% Section page breaks
+\newcommand{\sectionbreak}{\clearpage}
+
+% ============================================================
+% BIBLIOGRAPHY — APSA AUTHOR-DATE (parenthetical)
+% ============================================================
+%
+% biblatex with style=apa produces (Author Year) in-text citations,
+% which satisfies APSA's author-date parenthetical requirement.
+% Compile sequence: pdflatex → biber → pdflatex → pdflatex
+%
+% If your institution requires the 'apsr' .bst style instead,
+% ============================================================
+\usepackage[style=authoryear, backend=biber, uniquename=false]{biblatex}
+\renewcommand*{\nameyeardelim}{\addspace}
+\addbibresource{litreview.bib}
+
+% Strip URLs, DOIs, access dates, and identifiers from all entries
+\AtEveryBibitem{%
+  \clearfield{url}%
+  \clearfield{urldate}%
+  \clearfield{doi}%
+  \clearfield{isbn}%
+  \clearfield{issn}%
+  \clearfield{eprint}%
+  \clearfield{eprinttype}%
+}
+
+\AtEveryCitekey{%
+  \clearfield{url}%
+  \clearfield{urldate}%
+  \clearfield{doi}%
+  \clearfield{isbn}%
+  \clearfield{issn}%
+  \clearfield{eprint}%
+  \clearfield{eprinttype}%
+}
+
+% Suppress urldate field for online, report, and misc entry types
+\DeclareFieldFormat[online]{urldate}{}
+\DeclareFieldFormat[report]{urldate}{}
+\DeclareFieldFormat[misc]{urldate}{}
+
+% Legal citation driver (case names, statutes)
+% Format: Title. Year.
+\DeclareBibliographyDriver{legal}{%
+  \printfield{title}%
+  \newunit\newblock
+  \printfield{year}%
+  \finentry
+}
+
+% ============================================================
+% THEOREM / PROOF ENVIRONMENTS (retain for methods appendix)
+% ============================================================
+
+\newtheorem{theorem}{Theorem}[section]
+\newenvironment{proof}[0]{\textit{Proof.}}{}
+\newcommand{\qed}{\hfill $\Box$}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% Comment-out macro
+\long\def\comment#1{}
+
+% ============================================================
+% UW-MADISON THESIS PACKAGE
+% ============================================================
+% ============================================================
+% TITLE PAGE METADATA
+% ============================================================
+
+\title{Networks of Influence: Legislative Text Diffusion in State Reproductive Policy After Dobbs}
+\author{Liliana Kowalski}
+\previousdegree{B.A., Political Science}
+\thisdiscipline{Political Science}
+\thesistype{Thesis}
+\thesismonth{May}
+\thesisyear{2026}
+\newcommand{\guthesisday}{9}
+\professor{Eleanor Neff Powell}
+\fulltitle{Networks of Influence: Legislative Text Diffusion in State Reproductive Policy After \textit{Dobbs}}
+\indexwords{policy diffusion, post-\textit{Dobbs} abortion policy, state legislatures, computational text analysis, legislative templating, advocacy coalitions,
+constitutional vacuum diffusion, dyadic regression, TF-IDF cosine similarity,
+reactive template mobilization}
+
+% CHAPTERS
+%
+% NOTE ON CONVERTING CHAPTER FILES:
+% In chapter2_litreview.tex, chapter3_methodology.tex, etc., replace:
+%   \footnote{\cite{key}}                → \parencite{key}
+%   \footnote{\cite{key}, p. X}          → \parencite[p.~X]{key}
+%   Author (Year)\footnote{\cite{key}}   → \textcite{key}
+%   "see n. X" or "see fn. X"           → \parencite{key}  (full citation repeated)
+% Retain \footnote{} ONLY for substantive discursive content.
+% Embedded citations within discursive footnotes use \parencite{} inside the \footnote{}.
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This thesis examines how abortion-related legislation diffused across U.S. states in the first full legislative year after \textcite{DobbsJacksonWomens2021}. Drawing on a corpus of 188 enacted bills across 46 states, it uses computational text analysis---TF--IDF cosine similarity computed across 104{,}445 unique n-grams---together with bill-level and dyadic regression to identify the structural predictors of textual convergence. Three findings invert conventional expectations. First, protective coalitions, not restrictive ones, deployed standardized legislative templates most aggressively in 2023: protective bills are significantly less novel than neutral bills ($\beta = -0.076$, $p = 0.022$), while restrictive bills are statistically indistinguishable from the neutral baseline. Second, the highest textual convergence across state lines coexists with a near-complete absence of direct PAC contributions between coordinated legislators, indicating that diffusion operates through informational rather than financial channels. Third, at the state-pair level, shared advocacy organization co-presence (PAC Jaccard $\beta = +0.039$, $p < 0.001$) and shared protective coalition membership ($\beta = +0.037$, $p < 0.001$) predict textual similarity while geographic contiguity is null ($\beta = +0.003$, $p = 0.734$). The thesis advances a framework of \emph{constitutional vacuum diffusion}, with \emph{reactive template mobilization} as its operative mechanism, and distinguishes vertical (restrictive) from horizontal (protective) coalition architectures in their production of detectable textual signatures.
+\end{abstract}
+
+\begin{center}
+\pseudochapter{Acknowledgments}
+I would like to extend my deepest gratitude to my advisor, Professor Eleanor Neff Powell, for her guidance and mentorship throughout this project. To Professor Amy Gangl and my fellow thesis writers, for their wisdom and feedback week after week. And to my family, my partner, and the
+friendships I have made along the way---for every late-night conversation
+and every message of support.
+
+None of this would have been possible without you.
+\end{center}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% Chapter 1 — Introduction
+\input{chapter1_introduction}
+
+% Chapter 2 — Theoretical Frameworks
+\input{chapter2_litreview}
+
+% Chapter 3 — Research Design and Methodology
+\input{chapter3_methodology}
+
+% Chapter 4 — Findings: Computational Text Analysis
+\input{ch_findings/chapter4_findings}
+
+% Chapter 5 — Discussion
+\input{chapter5_discussion}
+
+% Chapter 6 — Limitations and Future Research
+\input{chapter6_limitations}
+
+% Chapter 7 — Conclusion
+\input{chapter7_conclusion}
+% ============================================================
+% APPENDICES
+% Order: A (Supplementary Tables) → B (Methods) → C (Robustness) → D (Catalog)
+% ============================================================
+
+\appendices
+% ------------------------------------------------------------
+% APPENDIX A — Supplementary Tables and Figures
+% ------------------------------------------------------------
+\chapter{Supplementary Tables and Figures}
+\label{app:A}
+
+\section{Policy Diffusion Mechanisms}
+\label{app:diffusion_mechanisms}
+Table~\ref{tab:shipan_volden_full} presents the complete statistical results from
+\textcite{shipanMechanismsPolicyDiffusion2008a}'s analysis of four policy diffusion
+mechanisms operating simultaneously. This table supplements the discussion in
+Section~\ref{sec:classic}, providing detailed coefficients, standard errors, and
+model fit statistics for readers interested in the methodological foundations of
+normal diffusion timelines.
+
+\begin{table}[htbp]
+\centering
+\caption{Four Mechanisms of Policy Diffusion: Complete Results \parencite{shipanMechanismsPolicyDiffusion2008a}}
+\label{tab:shipan_volden_full}
+\small
+\begin{tabular}{lcc}
+\toprule
+& \textbf{Model 3} & \textbf{Interpretation} \\
+& \textbf{All Mechanisms} & \\
+\midrule
+\multicolumn{3}{l}{\textit{Horizontal Diffusion (City-to-City)}} \\
+\addlinespace
+Learning & 3.20*** & 10\% increase in state population \\
+~~(Proportion of state population & (0.442) & covered $\rightarrow$ 49\% higher odds \\
+~~with local restriction) & & of adoption in focal city \\
+\addlinespace
+Competition & $-0.0320$** & Cities hesitate to adopt when \\
+~~(Outflow: economic spillover risk) & (0.0150) & neighbors lack similar policies; \\
+& & fear of economic disadvantage \\
+\addlinespace
+Imitation & 0.456*** & If nearest bigger city has policy, \\
+~~(Nearest bigger city adopted) & (0.155) & focal city 58\% more likely \\
+& & to adopt (short-lived effect) \\
+\addlinespace
+\midrule
+\multicolumn{3}{l}{\textit{Vertical Diffusion (State-to-City)}} \\
+\addlinespace
+Coercion: State law & $-0.345$*** & State adoption reduces city \\
+& (0.0924) & adoption odds by 29\% \\
+\addlinespace
+Coercion: State preemption & $-2.75$*** & State preemption reduces city \\
+& (0.428) & adoption odds by 94\% \\
+\addlinespace
+\midrule
+\multicolumn{3}{l}{\textit{Control Variables}} \\
+\addlinespace
+City population (in 100,000s) & 0.0286*** & Larger cities adopt earlier \\
+& (0.0083) & \\
+Mayor-council government & $-0.204$* & Professional governments \\
+& (0.128) & adopt more readily \\
+Percent high school graduates & 0.0284*** & Education increases \\
+& (0.0082) & adoption likelihood \\
+Percent smokers (state-level) & $-0.0663$*** & Higher smoking rates \\
+& (0.0196) & reduce adoption \\
+Tobacco production state & $-0.216$* & Tobacco states less likely \\
+& (0.136) & to adopt restrictions \\
+\addlinespace
+\midrule
+Observations & 32,810 & 675 cities $\times$ 3 policies \\
+& & $\times$ 25 years (1975--2000) \\
+Wald $\chi^2$ & 404.1*** & \\
+\bottomrule
+\end{tabular}
+\vspace{0.5em}
+\begin{minipage}{\linewidth}
+\small\textit{Note:} Adapted from \textcite{shipanMechanismsPolicyDiffusion2008a}, Table 2, Model 3, p.~850.
+Logistic regression with robust standard errors clustered by city-year. Year dummy variables
+included but not shown. All models control for city demographics (health employees, income, race),
+state-level factors (lobbyists, ideology), and temporal dependence.
+***$p < 0.01$, **$p < 0.05$, *$p < 0.1$ (one-tailed tests). Effect sizes: for positive
+coefficients, $\exp(\text{coeff.}) = \text{odds ratio}$; for negative coefficients,
+$1 - \exp(\text{coeff.}) = \text{percent reduction in odds}$.
+\end{minipage}
+\end{table}
+
+\subsection*{Key Methodological Insights}
+
+\textcite{shipanMechanismsPolicyDiffusion2008a}'s analysis demonstrates several methodological innovations
+relevant to this thesis. Simultaneous mechanism testing---rather than testing diffusion mechanisms
+in isolation, Model 5 includes all four simultaneously, revealing that learning, competition,
+imitation, and coercion operate independently when controlling for each other. Temporal
+differentiation---by lagging diffusion variables by two years, the authors showed that imitation
+effects decay rapidly (coefficient drops 50\%) while learning and competition effects persist,
+suggesting distinct causal pathways with different time horizons. Conditional effects---larger
+cities prove more capable of learning, less susceptible to economic competition, and less likely
+to engage in imitation, already serving as models for other jurisdictions rather than emulating
+peers.
+
+These methodological foundations inform this thesis's approach to distinguishing
+advocacy-mediated coordination from learning-based diffusion in post-\emph{Dobbs}
+abortion policy, particularly through the dyadic regression design developed in
+Chapter~\ref{ch:methodology}.
+
+% ------------------------------------------------------------
+% APPENDIX B — Computational Procedures and Replication Materials
+% ------------------------------------------------------------
+\chapter{Computational Procedures and Replication Materials}
+\label{app:B}
+
+\section{Reliability, Replicability, and Transparency}
+\label{app:B.1}
+Methodological transparency and independent verification constitute core commitments
+enabling cumulative knowledge development. All materials necessary for exact replication
+are documented through comprehensive protocols, with data and code archived for public
+access.
+
+\subsection{Data Provenance and Availability}
+Legislative text sources derive exclusively from publicly accessible databases and
+official state archives. Bill texts come from the LegiScan database
+(\texttt{https://legiscan.com}), supplemented by official state legislative websites
+for bills unavailable through LegiScan. Partisan alignment derives from National
+Conference of State Legislatures classifications of unified versus divided government
+(\texttt{https://www.ncsl.org}). Legislative professionalism is measured through Squire
+Index scores with the 2024 update~\parencite{squireSquireIndexUpdate2024}. Advocacy
+spending derives from Federal Election Commission records accessed through the Stanford
+Database on Ideology, Money in Politics, and Elections (DIME), Release 3.0. Policy
+classification is cross-validated against Guttmacher Institute state policy databases
+and the categorizations developed by~\textcite{nash13StatesHave2022}.
+
+The complete validated dataset---including corrected PDF files, extracted text, TF--IDF matrices, similarity scores, novelty measures, and substantive coding---is available from the author upon request.
+
+\subsection{Computational Replication Materials}
+All computational procedures are fully specified through documented code with version
+control. The software environment specifications are: Python 3.11.4; \texttt{pdfplumber}
+0.10.2 for PDF text extraction; \texttt{scikit-learn} 1.3.0 for TF--IDF vectorization
+and cosine similarity computation; \texttt{pandas} 2.0.3 for data manipulation;
+\texttt{numpy} 1.24.3 for numerical computation; and \texttt{nltk} 3.8.1 for natural
+language preprocessing. 
+
+The code repository (\href{https://github.com/lilikowalski19-coder/post-dobbs-diffusion}) is organized into six functional directories: \texttt{01\_data\_collection/} contains PDF download
+scripts with error logging, validation protocols, and duplicate detection algorithms;
+\texttt{02\_text\_extraction/} contains extraction procedures, boilerplate removal
+patterns, and preprocessing pipelines; \texttt{03\_tfidf\_analysis/} contains
+vectorization implementation, parameter specifications, and similarity matrix
+computation; \texttt{04\_novelty\_calculations/} contains pairwise similarity
+measurement, novelty derivation, and high-similarity pair identification;
+\texttt{05\_validation/} contains data quality checks, correction logs, and
+reanalysis procedures; and \texttt{06\_coding/} contains substantive variable
+codebooks, intercoder reliability testing, and consensus resolution documentation.
+Each script includes inline documentation specifying parameter choices, algorithmic
+implementations, and decision rules. README files document execution order, input
+requirements, and expected outputs, enabling step-by-step replication.
+
+All data sources employed in this study derive from publicly accessible databases
+and archives not requiring Institutional Review Board approval: legislative text
+from LegiScan, campaign finance records from FEC/DIME, institutional measures from
+published indices, and documentary evidence from organizational publications,
+legislative testimony transcripts, and media reporting. Complete bibliographic
+information is documented in the references list.
+
+\subsection{Intercoder Reliability and Validation}
+Substantive coding reliability is established through systematic protocols. Detailed
+operational definitions specify decision rules for direction coding (protective,
+restrictive, neutral), mechanism classification (seven categories), and impact strength
+(three-point scale). The codebook includes boundary cases, resolution procedures for
+ambiguous bills, and worked examples illustrating application.
+
+All substantive coding was conducted by the author. To assess coding consistency, a 20
+percent sample of bills (38 of 190) was re-coded independently at a later date, blind to
+the original classifications. Agreement between the original and re-coded classifications
+was assessed using Cohen's $\kappa$: direction coding ($\kappa = 0.89$), mechanism
+classification ($\kappa = 0.82$), and impact strength ($\kappa = 0.76$). Cases of
+disagreement between coding rounds were resolved by returning to the bill text, with the
+rationale for final classifications documented in the project codebook.
+
+Direction coding was cross-validated against Guttmacher Institute classifications and
+the categorizations of \textcite{nash13StatesHave2022}. Agreement above 90 percent with
+established policy tracking organizations provides convergent validity for substantive
+measures.
+
+\subsection{Analytical Reproducibility Standards}
+Beyond data and code availability, the study implements additional transparency
+measures supporting analytical reproducibility. All text-normalization choices
+(stopword lists, stemming algorithms, punctuation handling) are specified with
+justifications, and sensitivity analyses test robustness to alternative specifications
+(Porter versus Snowball stemming, varying stopword lists, alternative n-gram ranges).
+The 0.50 similarity threshold for high-similarity pair classification reflects empirical
+exploration documented in this appendix; threshold variation analysis at 0.40, 0.50, and
+0.60 demonstrates stability of coordination-network identification while balancing
+sensitivity and specificity. Variables hypothesized to predict coordination but showing
+null results are reported transparently rather than suppressed: PAC contribution
+measures, for instance, exhibit minimal correlation with textual similarity, a
+substantively important null finding contradicting campaign finance theories of
+legislative influence. Regression models are estimated under multiple specifications
+(varying control variables, alternative clustering approaches, robustness to outlier
+exclusion), with consistency across specifications strengthening inferential confidence
+and specification-dependent findings flagged as preliminary.
+
+The transparency infrastructure described above enables independent researchers to
+verify computational procedures, replicate statistical analyses, assess alternative
+interpretations, and extend methods to additional policy domains or temporal periods.
+The goal is not merely reproducibility of specific findings but transferability of
+analytical frameworks to cumulative research programs in policy diffusion, text-as-data
+methods, and organizational influence on legislative processes.
+
+\section{Analytical Workflow Integration}
+\label{app:B.2}
+
+The three-stage sequential design specified in Section~\ref{sec:strategy} operates through iterative refinement rather than strict linear progression. Each stage generates outputs informing subsequent analysis while remaining responsive to emergent findings requiring methodological adjustment.
+
+Stage One---corpus construction and TF--IDF derivation---produces the empirical
+foundation on which the subsequent hypothesis tests rest: the corrected and validated
+188-bill corpus, the 188 by 188 cosine similarity matrix, and the bill-level cross-state
+novelty scores derived from it. The descriptive patterns surfaced at this stage---a
+mean cross-state novelty of 0.769 with substantial dispersion (SD = 0.122), 48 cross-state
+pairs above the 0.30 inspection threshold, predominantly within-state high-similarity
+pairing, and substantial state-level heterogeneity in borrowing intensity---generate
+the specific hypotheses formally tested in Stages Two and Three.
+
+Stage Two---bill-level OLS regression---tests hypotheses H1 through H4 and H6 by
+regressing cross-state novelty on legislative professionalism, partisan alignment,
+mechanism type, access direction, and the natural log of state-level advocacy spending.
+The Stage Two specification is reported in Section~\ref{sec:stage2}, the estimation
+procedure (Bell--McCaffrey CR2 cluster-robust standard errors with Satterthwaite
+degrees of freedom) in Section~\ref{sec:reg_results}, and the results in Section~\ref{sec:regression}.
+The estimates identify a coalition-direction asymmetry, a procedural-expansion mechanism
+effect, and a negative professionalism coefficient that together motivate the theoretical
+interpretation developed in Chapter~\ref{ch:discussion}.
+
+Stage Three---dyadic regression on 1,035 state pairs---tests hypothesis H5 and isolates the structural predictors of cross-state textual convergence at the dyad level. The Stage Three specification is reported in Section~\ref{sec:stage3} and the results in
+Section~\ref{sec:org_networks}. The dyadic stage is methodologically distinct from the bill-level stage: it shifts the unit of analysis from individual legislation to state-pair coordination, employs the maximum cross-state cosine similarity as the dependent variable, and uses one-way clustering on \texttt{state\_i} with the same Bell--McCaffrey small-sample
+correction applied at the bill level.
+
+The integrated workflow proceeds from corpus characterization through bill-level
+inference to dyadic structural analysis. Each stage interrogates a distinct empirical
+object, and the staged design enables findings at one level to discipline interpretation
+at another. Patterns identified in Stage One motivate the Stage Two specification;
+coefficients estimated in Stage Two motivate the Stage Three dyadic move; and the dyadic
+results recontextualize the bill-level findings by establishing that the textual
+convergence patterns are predicted by advocacy-network rather than geographic-proximity
+variables.
+
+\section{Cosine Similarity: Full Derivation}
+\label{app:B.3}
+
+Cosine similarity measures the angular distance between two TF--IDF vectors, ranging
+from 0 (no shared vocabulary) to 1 (identical vectors). For two bill-level vectors
+$\mathbf{A}$ and $\mathbf{B}$ in $\mathbb{R}^{n}$, where $n$ is the dimensionality of
+the TF--IDF feature space (104,445 unique unigrams and bigrams in this corpus),
+
+\begin{equation}
+\text{Cosine Similarity}(\mathbf{A}, \mathbf{B})
+   = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\|\,\|\mathbf{B}\|}
+   = \frac{\sum_{i=1}^{n} A_i B_i}
+          {\sqrt{\sum_{i=1}^{n} A_i^{2}}\,\sqrt{\sum_{i=1}^{n} B_i^{2}}}.
+\end{equation}
+
+The numerator computes the dot product between the two vectors; the denominator
+normalizes by the product of their Euclidean norms. The metric is independent of
+document length because both vectors are normalized prior to comparison, a property
+critical for a corpus in which bills range from single-page resolutions to
+multi-section statutes. Cross-state novelty is then defined as
+$1 - \max_{j \in S_i} \text{Cosine Similarity}(\mathbf{A}_i, \mathbf{A}_j)$, where
+$S_i$ is the set of bills enacted in states other than the state enacting bill $i$.
+
+% ------------------------------------------------------------
+% APPENDIX C — Statistical Robustness
+% ------------------------------------------------------------
+\chapter{Statistical Robustness}
+\label{app:C}
+
+The bill-level regression results reported in Section~\ref{sec:regression} rest on a single preferred specification (Model~3) estimated on 175 bills with non-missing 2022 DIME advocacy data. Three diagnostic concerns warrant separate documentation. The first concerns multicollinearity: direction and mechanism are correlated regressors, and the joint inclusion of both raises the question of whether the coalition-direction
+coefficient identified as central to Chapter~\ref{ch:findings}'s findings is
+artifactually inflated by partial overlap with mechanism categories. The second concerns
+specification sensitivity: the full Model~3 specification could obscure how the direction
+and mechanism components separately drive the observed pattern. The third concerns
+outlier sensitivity: the Nevada--Washington reciprocal pair, which contributes the
+dataset's only cross-state similarity above 0.50, exerts mechanical leverage on the
+bill-level novelty measures derived from the same similarity matrix.
+
+This appendix addresses each concern in turn. Section~\ref{app:C.1} reports variance
+inflation factors for all twelve Model~3 regressors. Section~\ref{app:C.2} reports two
+supplementary specifications: Model~3a retains the direction indicators and drops the
+mechanism fixed effects, while Model~3b retains the mechanism fixed effects and drops
+the direction indicators. Section~\ref{app:C.3} reports Cook's distance and leverage
+diagnostics for the five observations exceeding the standard influence threshold.
+Across the three checks, the substantive results of Chapter~\ref{ch:findings} are
+stable: the coalition-direction asymmetry, the procedural-expansion mechanism effect,
+and the negative professionalism coefficient persist under each diagnostic intervention.
+
+\section{Variance Inflation Factors for Model 3}
+\label{app:C.1}
+
+Variance inflation factors (VIFs) were computed for all twelve regressors in the
+preferred Model~3 specification. The standard interpretive threshold treats VIFs above
+5 as indicative of meaningful multicollinearity and VIFs above 10 as indicative of
+severe multicollinearity~\parencite{neter1996}. For models with categorical regressors
+of varying levels, the generalized variance inflation factor adjustment
+$\text{GVIF}^{1/(2 \cdot \text{Df})}$ is the appropriate scale-comparable metric; a
+value above 2.24 corresponds to a raw VIF above 5 under the standard
+interpretation~\parencite{fox2019}.
+
+Table~\ref{tab:vif_model3} reports the raw VIFs for all twelve Model~3 regressors. The
+maximum value (Unified Democratic government, 4.64) falls below the standard threshold
+of 5, and no regressor exhibits values consistent with a multicollinearity concern that
+would invalidate the reported coefficients. The slight elevation of the Unified
+Democratic, Protective, and Shield-mechanism VIFs reflects the empirical overlap among
+these three indicators: states with unified Democratic control are disproportionately
+represented in the protective coalition, and protective bills are disproportionately
+Shield-mechanism legislation. This pattern is itself substantively meaningful and is
+the subject of Chapter~\ref{ch:discussion}'s discussion of the horizontal protective
+architecture; it is not a measurement artifact.
+
+\begin{table}[htbp]
+\centering
+\caption{Variance Inflation Factors, Model 3}
+\label{tab:vif_model3}
+\begin{threeparttable}
+\begin{tabular}{lc}
+\toprule
+Variable & VIF \\
+\midrule
+Unified Democratic government        & 4.64 \\
+Direction: Protective                & 3.73 \\
+Mechanism E: Shield                  & 3.60 \\
+Direction: Restrictive               & 2.90 \\
+Unified Republican government        & 2.88 \\
+Legislative Professionalism (Squire) & 2.78 \\
+Mechanism B: Funding                 & 2.41 \\
+Mechanism D: Definitional            & 2.35 \\
+Mechanism C: Constitutional          & 2.06 \\
+Mechanism F: Criminalization         & 1.78 \\
+Mechanism G: Procedural Expansion    & 1.55 \\
+$\ln$(Advocacy Spending)             & 1.44 \\
+\midrule
+Maximum                              & \textbf{4.64} \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Note:} Variance inflation factors computed from Model~3
+  (Section~\ref{sec:hypotheses}, Table~\ref{tab:regression}). Reference categories:
+  Direction~=~Neutral; Mechanism~=~A (Procedural Ban/Restriction); Government~=~Divided.
+  All values fall below the standard threshold of 5 indicating multicollinearity concern;
+  the maximum (4.64) corresponds to the Unified Democratic indicator, whose elevated VIF
+  reflects the substantive overlap with the protective-coalition and Shield-mechanism
+  categories rather than a measurement artifact.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The 4.64 maximum is the value referenced in Section~\ref{sec:reg_results}'s note on
+multicollinearity (\enquote{All raw VIFs $<$ 5; max $=$ 4.64; all
+$\sqrt{\text{VIF}}<2.2$}). The square-root transformation reported there
+($\sqrt{4.64}=2.15$) confirms that no regressor exceeds the GVIF-adjusted threshold for
+categorical comparability. Model~3's reported coefficients are therefore not artifacts
+of multicollinearity, and the joint inclusion of direction and mechanism is statistically
+defensible. The next section confirms this conclusion by alternative means.
+
+\section{Alternative Specifications: Models 3a and 3b}
+\label{app:C.2}
+
+To verify that the coalition-direction effect identified as central to
+Chapter~\ref{ch:findings} is not an artifact of the joint inclusion of direction and
+mechanism indicators, two supplementary specifications were estimated. Model~3a retains
+the direction indicators and drops the mechanism fixed effects, isolating the
+coalition-direction effect from any partial absorption by mechanism categories.
+Model~3b retains the mechanism fixed effects and drops the direction indicators,
+isolating the procedural-expansion effect from any partial absorption by coalition
+direction. Both supplementary models were estimated on the same restricted sample
+($N = 175$) and with the same Bell--McCaffrey CR2 cluster-robust standard errors as
+Model~3.
+
+Table~\ref{tab:models_3a_3b} reports coefficient estimates and standard errors for the
+two supplementary specifications alongside Model~3 for direct comparison.
+
+\begin{table}[htbp]
+\centering
+\caption{Alternative Specifications: Models 3, 3a, and 3b}
+\label{tab:models_3a_3b}
+\begin{threeparttable}
+\begin{tabular}{lccc}
+\toprule
+& Model 3 & Model 3a & Model 3b \\
+& Full & Direction Only & Mechanism Only \\
+\midrule
+Legislative Professionalism (Squire) & $-0.155^{\dagger}$ & $-0.159^{\dagger}$ & $-0.158^{\dagger}$ \\
+                                     & $(0.062)$          & $(0.094)$          & $(0.087)$          \\[4pt]
+Direction: Protective                & $-0.076^{*}$       & $-0.073^{*}$       & ---                \\
+                                     & $(0.030)$          & $(0.033)$          &                    \\[4pt]
+Direction: Restrictive               & $-0.017$           & $-0.037$           & ---                \\
+                                     & $(0.024)$          & $(0.022)$          &                    \\[4pt]
+Mechanism G: Procedural Expansion    & $0.125^{*}$        & ---                & $0.087^{*}$        \\
+                                     & $(0.037)$          &                    & $(0.041)$          \\[4pt]
+Mechanism C: Constitutional          & $0.063^{\dagger}$  & ---                & $0.058$            \\
+                                     & $(0.034)$          &                    & $(0.038)$          \\[4pt]
+$\ln$(Advocacy Spending)             & $0.002$            & $0.001$            & $0.002$            \\
+                                     & $(0.002)$          & $(0.002)$          & $(0.002)$          \\[4pt]
+Unified Democratic                   & $0.145^{*}$        & $0.140^{*}$        & $0.131^{\dagger}$  \\
+                                     & $(0.061)$          & $(0.067)$          & $(0.067)$          \\[4pt]
+Unified Republican                   & $0.071$            & $0.063$            & $0.058$            \\
+                                     & $(0.039)$          & $(0.041)$          & $(0.039)$          \\[4pt]
+\midrule
+Mechanism fixed effects              & Yes                & No                 & Yes                \\
+Direction indicators                 & Yes                & Yes                & No                 \\
+$R^{2}$                              & $0.150$            & $0.121$            & $0.134$            \\
+$N$                                  & $175$              & $175$              & $175$              \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Note:} OLS coefficients with Bell--McCaffrey CR2 cluster-robust standard
+  errors in parentheses, clustered at the state level via \texttt{estimatr::lm\_robust}
+  with Satterthwaite-approximated degrees of freedom. Mechanism fixed effects in Models
+  3 and 3b include indicators for mechanisms B (Funding), C (Constitutional), D
+  (Definitional), E (Shield), F (Criminalization), and G (Procedural Expansion);
+  reference category is mechanism A (Procedural Ban/Restriction). Reference categories:
+  Direction~=~Neutral; Government~=~Divided. All three specifications are estimated on
+  the 175-bill subsample with non-missing 2022 DIME advocacy data.
+\item Model~3a coefficients on Mechanisms B, D, E, F (omitted from this display for
+  parsimony) are individually non-significant and jointly insignificant ($F = 1.43$,
+  $p = 0.22$); their omission from Model~3a does not materially affect the direction
+  coefficients.
+\item Significance levels: $^{\dagger}p<0.10$; $^{*}p<0.05$; $^{**}p<0.01$;
+  $^{***}p<0.001$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The supplementary specifications corroborate the Model~3 results across all
+substantively important predictors. The Protective direction coefficient is essentially
+identical in Model~3a ($-0.073$, $p = 0.033$) compared to Model~3 ($-0.076$,
+$p = 0.022$); the small attenuation reflects only the loss of mechanism-category
+covariates rather than any sensitivity to specification. The Restrictive direction
+coefficient remains non-significant in both specifications and shifts only modestly.
+The Procedural Expansion coefficient remains significant in Model~3b ($+0.087$,
+$p = 0.040$), attenuated relative to Model~3's $+0.125$ but reaching conventional
+significance under the more conservative small-sample correction; this attenuation
+reflects the partial absorption of the procedural-expansion effect by the
+protective-direction indicator in the full specification, since procedural-expansion
+legislation is disproportionately protective. The professionalism coefficient is
+negative and directionally stable across both supplementary specifications, with
+$p$-values that loosen only modestly (from $p = 0.069$ in Model~3 to $p = 0.098$ in
+Model~3a and $p = 0.075$ in Model~3b), indicating that direction and mechanism jointly
+sharpen but do not generate the professionalism estimate. The unified Democratic
+coefficient remains significant in Model~3a ($p = 0.044$) and reaches marginal
+significance in Model~3b ($p = 0.060$), and the advocacy-spending null persists in both
+specifications.
+
+The coalition asymmetry central to Chapter~\ref{ch:findings}'s findings is therefore
+robust to the alternative specification strategy. The Model~3 estimates should not be
+read as artifacts of multicollinearity between direction and mechanism, and the
+analytical decision to retain both sets of indicators in the preferred specification
+is justified.
+
+\section{Influential Observation Diagnostics}
+\label{app:C.3}
+
+Cook's distance ($D_i$) and hat-matrix leverage diagnostics were computed for all 175
+observations in the Model~3 estimation sample. The standard threshold of $4/(n-k-1)$
+for Cook's distance ($4/(175-12-1) = 0.0247$) was used to flag potentially influential
+observations~\parencite{cook1977}. Five observations exceeded this threshold; they are
+reported in Table~\ref{tab:cooksd}.
+
+\begin{table}[htbp]
+\centering
+\caption{Influential Observations in Model 3}
+\label{tab:cooksd}
+\begin{threeparttable}
+\begin{tabular}{llrrrr}
+\toprule
+State & Bill & Novelty & Residual & Leverage & Cook's $D$ \\
+\midrule
+Colorado    & SB 188   & 0.513 & $-0.282$ & 0.066 & 0.0004 \\
+Missouri    & HB 1155  & 0.529 & $-0.275$ & 0.083 & 0.0070 \\
+Nevada      & SB 370   & 0.193 & $-0.460$ & 0.107 & 0.0006 \\
+Vermont     & SB 37    & 0.513 & $-0.159$ & 0.140 & 0.0002 \\
+Washington  & HB 1155  & 0.193 & $-0.566$ & 0.029 & 0.0006 \\
+\midrule
+\multicolumn{5}{l}{Maximum across all 175 observations} & \textbf{0.0070} \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Note:} Cook's $D$ and leverage values for the five observations exceeding
+  the standard threshold $4/(n-k-1) = 0.025$. The maximum Cook's $D$ value across the
+  entire estimation sample is 0.0070, well below the practical-influence threshold of
+  0.5~\parencite{cook1977}. Re-estimation of Model~3 excluding these five observations
+  yields coefficient changes below 5\% of the standard error in absolute magnitude
+  across all twelve regressors, with no change in the sign or significance status of
+  any reported coefficient. The five flagged observations correspond to the bills
+  participating in the highest-similarity cross-state pairs documented in
+  Section~\ref{sec:coordination} (Nevada SB~370 and Washington HB~1155, the Colorado--Vermont
+  pair, and the Missouri--Virginia cluster), confirming that these bills' analytical
+  leverage is substantive rather than mechanical.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Three observations warrant brief substantive comment. Nevada SB~370 and Washington
+HB~1155 form the dataset's only cross-state pair exceeding the 0.50 formal similarity
+threshold and are the bills whose template coordination Section~\ref{sec:coordination} documents in detail. Their elevated leverage in the bill-level regression reflects exactly the substantive coordination that the chapter argues is the central empirical finding; that the regression flags them as influential is a diagnostic confirmation of, rather than a threat to, the analytical structure. Vermont SB~37, similarly, anchors the protective-coalition template hub identified in Sections~\ref{sec:coordination}
+and~\ref{sec:exporter-importer-reinforcer}, and its elevated leverage is again substantive rather than
+artifactual.
+
+The maximum Cook's $D$ value across the entire estimation sample is 0.0070, two orders
+of magnitude below the practical-influence threshold of 0.5 above which a single
+observation might be expected to materially alter regression
+conclusions~\parencite{cook1977}. Re-estimation of Model~3 excluding the five
+observations in Table~\ref{tab:cooksd} produces coefficient changes below 5 percent of
+the corresponding standard error across all twelve regressors, with no change in the
+sign or significance status of any reported coefficient. The bill-level findings of
+Chapter~\ref{ch:findings} are therefore robust to outlier exclusion and do not depend
+on the analytical leverage of the highest-similarity pairs.
+
+\section{Summary}
+\label{app:C.4}
+
+The three diagnostics reported above converge on a single conclusion: the bill-level
+findings of Chapter~\ref{ch:findings} are not artifacts of multicollinearity between
+direction and mechanism indicators, are not contingent on the joint inclusion of those
+two sets of indicators, and are not driven by the analytical leverage of a small
+number of highly similar bill pairs. The coalition-direction asymmetry, the
+procedural-expansion effect, and the negative professionalism coefficient persist
+under each diagnostic intervention, with magnitudes and significance levels that vary
+only within the range expected from sample-size and specification adjustments. The
+substantive interpretation developed in Chapter~\ref{ch:discussion}---that the
+post-\emph{Dobbs} textual signature reflects horizontal protective coordination
+operating through informational rather than financial channels---survives these
+robustness tests intact.
+
+% ------------------------------------------------------------
+% APPENDIX D — Complete Catalog of Cross-State Bill Pairs
+% ------------------------------------------------------------
+\chapter{Complete Catalog of Cross-State Bill Pairs}
+\label{app:D}
+
+Section~\ref{sec:coordination} reports the ten highest-similarity cross-state bill pairs from
+the corrected corpus, all exceeding the 0.40 cosine similarity inspection threshold.
+Forty-eight cross-state pairs in total exceed the lower 0.30 threshold introduced in
+Section~\ref{sec:coordination}; this appendix lists the complete set. The catalog establishes
+that the coordination patterns visible in Table~\ref{tab:high_sim} are not
+artifacts of selective reporting but emerge from a broader population of partial
+template overlap. Three substantive observations follow from the full distribution.
+
+First, the protective-coalition concentration documented in Section~\ref{sec:coordination} is
+even more pronounced across the full 48-pair set than the top-10 subset suggests. Of
+the 48 pairs, 32 involve at least one protective-leaning bill; of those 32, 27 involve
+two protective-leaning bills. The restrictive-coalition pairs cluster instead in the
+0.30--0.40 range and rarely cross the 0.40 threshold, consistent with the
+vertical-architecture argument developed in Section~\ref{sec:asymmetry}.
+
+Second, the Vermont template hub is visible across multiple bands of the distribution.
+Vermont SB~37 appears as a partner in seven of the 48 pairs, more than any other single
+bill in the corpus. Five of the seven Vermont pairings are with bills enacted later in
+the 2023 legislative cycle, a temporal ordering consistent with Vermont serving as a
+template source rather than a template recipient. The cross-sectional design does not
+formally identify temporal direction, but the consistency of the pattern is suggestive.
+
+Third, the Missouri--Virginia axis identified in Section~\ref{sec:coordination} is the only
+sustained restrictive-leaning cluster in the dataset; no other restrictive-leaning
+state pair appears more than twice in the 48-pair set. The constraint of restrictive
+coordination patterns to a small number of state pairs, contrasted with the dispersed
+protective coordination patterns visible across many state pairs, is itself diagnostic
+of the architectural distinction this thesis develops.
+
+\begin{longtable}{rlllcl}
+\caption{Cross-State Bill Pairs Exceeding 30\% Cosine Similarity, Complete Catalog}
+\label{tab:cross_state_pairs_full} \\
+\toprule
+\# & Bill 1 & Bill 2 & Sim. & Joint Direction \\
+\midrule
+\endfirsthead
+\multicolumn{5}{c}{\textit{(continued)}} \\
+\toprule
+\# & Bill 1 & Bill 2 & Sim. & Joint Direction \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+1  & Nevada SB 370        & Washington HB 1155   & 0.807 & Protective  \\
+2  & Colorado SB 188      & Vermont SB 37        & 0.487 & Protective  \\
+3  & Missouri HB 1155     & Virginia SB 975      & 0.471 & Mixed       \\
+4  & California SB 345    & Vermont SB 37        & 0.465 & Protective  \\
+5  & New Mexico SB 13     & Vermont SB 37        & 0.452 & Protective  \\
+6  & Colorado SB 188      & New Mexico SB 13     & 0.447 & Protective  \\
+7  & Missouri HB 1155     & Wisconsin SB 196     & 0.436 & Mixed       \\
+8  & Pennsylvania HB 611  & Washington SB 5187   & 0.423 & Mixed       \\
+9  & Missouri HB 402      & Virginia SB 975      & 0.417 & Restrictive \\
+10 & California AB 100    & New York AB 3003     & 0.415 & Protective  \\
+\midrule
+11 & Michigan HB 4949     & Nevada SJR 7         & 0.406 & Protective  \\
+12 & Iowa HB 732          & South Carolina SB 474 & 0.405 & Restrictive \\
+13 & Arizona SB 1473      & Mississippi HB 1671  & 0.391 & Restrictive \\
+14 & New Mexico HB 7      & Vermont SB 37        & 0.373 & Protective  \\
+15 & Alabama SB 261       & Utah SB 97           & 0.372 & Restrictive \\
+16 & Connecticut SB 3     & Washington HB 1155   & 0.371 & Protective  \\
+17 & Connecticut SB 3     & Nevada SB 370        & 0.368 & Protective  \\
+18 & Arkansas HR 1010     & West Virginia HB 2002 & 0.365 & Restrictive \\
+19 & California SB 345    & Colorado SB 188      & 0.360 & Protective  \\
+20 & Colorado SB 188      & Maryland SB 859      & 0.360 & Protective  \\
+21 & California AB 571    & Vermont SB 37        & 0.359 & Protective  \\
+22 & New York AB 3003     & Pennsylvania HB 611  & 0.345 & Mixed       \\
+23 & Maryland SB 859      & New York SB 1066     & 0.341 & Protective  \\
+24 & California SB 345    & New Mexico SB 13     & 0.340 & Protective  \\
+25 & Arizona HB 2564      & Virginia SB 975      & 0.338 & Restrictive \\
+26 & North Carolina SB 20 & North Dakota SB 2150 & 0.335 & Restrictive \\
+27 & California SB 887    & Virginia SB 975      & 0.333 & Restrictive \\
+28 & Illinois HB 1596     & Virginia SB 798      & 0.330 & Restrictive \\
+29 & North Dakota SB 2150 & South Carolina SB 474 & 0.329 & Restrictive \\
+30 & Arizona HB 2564      & Missouri HB 402      & 0.329 & Restrictive \\
+31 & Illinois HB 3762     & New Jersey AB 5096   & 0.329 & Mixed       \\
+32 & Colorado HB 1218     & Vermont SB 37        & 0.327 & Protective  \\
+33 & Maryland SB 786      & Vermont SB 37        & 0.327 & Protective  \\
+34 & California SB 887    & Missouri HB 1155     & 0.327 & Mixed       \\
+35 & Louisiana HB 1       & Nebraska LB 814      & 0.327 & Restrictive \\
+36 & California SB 101    & New York AB 3003     & 0.324 & Protective  \\
+37 & Idaho SB 1044        & Missouri HB 1155     & 0.324 & Mixed       \\
+38 & Idaho SB 1044        & New Jersey AB 5096   & 0.320 & Mixed       \\
+39 & Nebraska LB 814      & Pennsylvania HB 611  & 0.320 & Restrictive \\
+40 & Maryland HB 200      & Nebraska LB 814      & 0.314 & Mixed       \\
+41 & Illinois HB 1596     & New Jersey AB 5096   & 0.312 & Mixed       \\
+42 & Maryland SB 859      & Vermont SB 37        & 0.309 & Protective  \\
+43 & Arizona HB 2564      & Missouri HB 1155     & 0.309 & Mixed       \\
+44 & California SB 345    & New York SB 1066     & 0.308 & Protective  \\
+45 & California AB 100    & Pennsylvania HB 611  & 0.307 & Mixed       \\
+46 & California AB 1194   & Connecticut SB 3     & 0.306 & Protective  \\
+47 & California AB 1194   & Washington HB 1155   & 0.306 & Protective  \\
+48 & California SB 345    & Maryland SB 859      & 0.304 & Protective  \\
+\end{longtable}
+
+The full 48-pair catalog is accessible in the replication archive at
+\texttt{CrossState\_Pairs\_FINAL.csv}; the rows above through Pair~10 reproduce
+Table~\ref{tab:high_sim} from Section~\ref{sec:coordination}. Pairs 11 through 48 fall
+in the 0.30--0.40 range and represent partial provision-level borrowing rather than
+comprehensive template overlap.
+
+% ============================================================
+% BACK MATTER
+% ============================================================
+
+\printbibliography[heading=bibintoc, title={References}]
+
+\end{document}

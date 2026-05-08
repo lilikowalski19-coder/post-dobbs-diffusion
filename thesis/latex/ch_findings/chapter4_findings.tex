@@ -1,0 +1,501 @@
+\chapter{Findings}
+\label{ch:findings}
+\section{Overview of Quantitative Results}
+\label{sec:findings_overview}
+
+This chapter presents the empirical results of the computational text analysis and organizes them around a single animating question: through what channels, and with what coalitional signatures, did abortion policy diffuse across the states in the first full legislative year after \textit{Dobbs}? The chapter answers this question in four analytical movements. Sections 4.2 through 4.5 establish the descriptive terrain, characterizing the shape of the novelty distribution, its geographic and ideological structure, its variation across legislative mechanisms, and the coalition asymmetry that becomes central to everything that follows. Section 4.6 then tests whether the descriptive patterns survive multivariate adjustment, using a bill-level regression framework to isolate the institutional, partisan, and coalitional predictors of textual originality. Section 4.7 moves from aggregate patterns to concrete cases, identifying the specific cross-state bill pairs whose textual overlap is substantial enough to serve as candidate instances of coordination. Sections 4.8 and 4.9 take up the mechanism question directly: if states are coordinating, through what channels does that coordination operate? Section 4.8 documents the absence of financial ties between coordinated legislators, and Section 4.9 develops the organizational-network interpretation and reports the dyadic regression that tests it at the state-pair level.
+The central empirical finding is that post-\textit{Dobbs} policymaking was not a product of isolated state innovation but of patterned diffusion across partisan and institutional lines. The direction of that diffusion, however, runs counter to conventional expectations: protective coalitions exhibited greater textual convergence than restrictive coalitions in 2023, and advocacy coordination operated through informational and organizational channels rather than financial ones.
+
+\section{Descriptive Patterns: The Distribution of Novelty Scores}
+\label{sec:descriptive}
+The corrected dataset of 188 bills exhibits the following distribution: 88 restrictive bills (46.8\%), 73 protective bills (38.8\%), and 27 neutral bills (14.4\%).\footnote{Throughout this thesis, \textit{protective} denotes legislation that preserves or expands access to abortion care, and \textit{restrictive} denotes legislation that narrows or prohibits such access. The terminology is adopted for analytical neutrality and corresponds to the access-direction coding described in Chapter 3; it should not be read as carrying evaluative weight in either direction.} This comparatively balanced division between restrictive and protective legislation reflects the constitutional vacuum's dual imperatives: states previously constrained by \emph{Roe} now free to ban abortion, and states previously assuming federal protection now compelled to codify access rights. Using text-as-data methods, I calculated the degree of textual originality, or \textit{cross-state novelty}, for each enacted bill, defined as one minus its highest cosine similarity to any bill enacted in a \textit{different} state:
+
+\begin{equation}
+\text{Novelty}_i = 1 - \max_{j \in J_{-s(i)}} \text{CosSim}(i, j)
+\label{eq:novelty}
+\end{equation}
+
+\noindent where $J_{-s(i)}$ denotes the set of all bills enacted in states other than the state of bill $i$. A higher novelty score indicates greater linguistic originality relative to out-of-state legislation, while lower scores reflect borrowing or replication with external models. Cross-state novelty was selected over corpus-wide novelty because 63 percent of bills had their closest textual partner within the same state---companion legislation or related bills within the same session---and the theoretical framework developed in Chapter~\ref{ch:theory} concerns interstate diffusion specifically.
+
+Cosine similarity is computed over TF-IDF vectors:
+\begin{equation}
+\text{CosSim}(i, j) = \frac{\mathbf{v}_i \cdot \mathbf{v}_j}{\|\mathbf{v}_i\| \|\mathbf{v}_j\|}
+\label{eq:cossim}
+\end{equation}
+
+This operationalization of legislative text similarity follows \textcite{wilkersonTracingFlowPolicy2015} and \textcite{linderTextPolicyMeasuring2020}, whose work establishes TF-IDF cosine similarity as a standard computational approach for detecting legislative text reuse across jurisdictions. The TF-IDF vectorization and cosine similarity formulations in Equation 4.2 derive from the foundational information retrieval literature \parencite{saltonIntroductionModernInformation1987,jurafskymartinspeechlangprocess2026}.
+
+\noindent where $\mathbf{v}_i$ and $\mathbf{v}_j$ are TF-IDF weighted term vectors for bills $i$ and $j$ across a vocabulary of 104,445 unique $n$-grams (unigrams and bigrams), producing a $188 \times 188$ similarity matrix.
+
+Across the full dataset of 188 bills, the mean cross-state novelty score was 0.769 ($SD = 0.122$), with a corresponding mean similarity of 0.231. As shown in Figure~\ref{fig:novelty_dist}, the distribution of novelty scores is concentrated in the 0.70--0.90 range, with 66.5 percent of bills falling in this interval and an interquartile range of 0.70 to 0.86. The tight central concentration confirms that diffusion in 2023 largely occurred through what \textcite{karchDemocraticLaboratories2007} characterizes as \textit{customization}---the modification of imported policy frameworks to fit local political and institutional contexts---rather than wholesale replication or independent policy invention.
+
+Substantively, this concentration means that the first legislative year after \textit{Dobbs} was neither a period of wholesale template copying nor a period of blank-page drafting. Most states worked from identifiable external frameworks and modified them to accommodate local constitutional, procedural, and political conditions. The moderate-borrowing baseline is the empirical signature of legislatures operating with reference to shared organizational infrastructure rather than in isolation from it, and it is against this baseline that the coalition-level asymmetries developed in Sections 4.5 and 4.6 acquire their theoretical significance.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_4_1_novelty_distribution}
+    \caption[Distribution of cross-state novelty scores]{Distribution of cross-state novelty scores for 188 abortion-related bills enacted across 46 states in 2023. The dashed vertical line indicates the mean novelty score (0.769). The distribution is concentrated between 0.70 and 0.90, with outliers at the low end driven by shield law template adoption. The kernel density estimate (solid curve) highlights the concentration of moderate-novelty bills characteristic of customized policy adoption.}
+    \label{fig:novelty_dist}
+\end{figure}
+
+Notable outliers anchor each extreme. At the high end, Michigan SB~2 (novelty $= 0.97$), Michigan HB~4006 ($= 0.96$), and Maine HB~1343 ($= 0.96$) enacted legislation with no close textual counterpart in any other state, indicating either truly original statutory frameworks or administrative bills with unique procedural language. That Michigan produced three of the five highest-novelty bills in the corpus reflects the state's high legislative professionalism ($\text{Squire} = 0.657$) combined with its distinctive post-2022 political context---the state's first unified Democratic government in decades. At the opposite extreme, Nevada SB 370 and Washington HB 1155 formed a reciprocal pair at novelty $= 0.19$ (cosine similarity $= 0.807$), the strongest evidence of cross-state template coordination in the dataset. Below these, Colorado SB~188 and Vermont SB~37 (both novelty $= 0.51$) and Missouri HB~1155 ($= 0.53$) represent cases of substantial cross-state borrowing.
+
+\section{Geographic and Ideological Clustering}
+\label{sec:geographic}
+
+Figure~\ref{fig:state_novelty} displays average novelty by state. The figure establishes substantial heterogeneity in state-level textual originality and anticipates two patterns developed more fully below: first, that neighboring states frequently occupy opposite ends of the novelty distribution, and second, that the states with the lowest novelty scores are ideologically clustered rather than regionally clustered. The direct test of whether geographic proximity predicts textual similarity is reserved for the dyadic analysis in Section 4.9, which models contiguity explicitly and finds it null 
+($\beta = +0.003$, $p = 0.734$). Figure 4.2 itself motivates rather than establishes the departure from traditional geographic-proximity models of diffusion \parencite{walkerDiffusionInnovationsAmerican1969}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig_4_2_state_novelty}
+    \caption[Mean cross-state novelty by state]{Mean cross-state novelty by state, sorted from lowest to highest. Color indicates empirical quartile classification (not the §3.3.3 threshold typology): blue denotes the bottom quartile (Importers/Adopters), gray the middle two quartiles (Mixed/Adapters), and green the top quartile (Innovators/Exporters). Dashed line marks the overall corpus mean (0.769). States with fewer than three enacted bills (South Dakota, Indiana, Ohio, Kentucky, Delaware) are shown for completeness but excluded from state-level interpretive claims (§4.3). The heterogeneity within quartiles---encompassing both high- and low-professionalism states---suggests that textual originality reflects multiple causal pathways.}
+    \label{fig:state_novelty}
+\end{figure}
+
+\textbf{High-novelty states} (mean novelty $\geq 0.82$) include Michigan (0.86, $N=16$), Maine (0.85, $N=7$), Tennessee (0.87, $N=4$), Texas (0.83, $N=7$), and Wyoming (0.82, $N=2$). States with higher means but only one or two enacted bills (South Dakota, Indiana, Ohio, Kentucky, Delaware) are set aside because their bill counts are insufficient to sustain a state-level characterization. These states encompass both low-professionalism legislatures operating with limited staff capacity (Wyoming, Squire $= 0.071$; Maine, Squire $= 0.133$) and high-capacity legislatures producing original frameworks (Michigan, Squire $= 0.657$; Texas, Squire $= 0.141$). The heterogeneity within the high-novelty category suggests that textual originality reflects multiple causal pathways: independent drafting due to limited access to external templates \textit{and} deliberate innovation by well-resourced legislatures.
+
+\textbf{Low-novelty states} (mean novelty $< 0.60$) include Nevada (0.51, $N = 3$, Squire = 0.169), Vermont (0.51, $N = 1$, Squire = 0.301), Wisconsin (0.56, $N = 1$), Pennsylvania (0.58, $N = 1$), and New Mexico (0.59, $N = 2$). These states function as importers in the diffusion network, heavily borrowing from external templates. Nevada and Vermont, both protective-leaning states, drew substantially from shield law and reproductive rights templates circulating through protective coalition networks. Wisconsin, also protective-leaning, enacted legislation closely resembling Missouri's definitional framework---an instance of cross-coalition borrowing discussed further in Section~\ref{sec:coordination}.
+
+Critically, the observed diffusion linkages do \textit{not} follow geographic contiguity. Nevada's shield law (SB~370) exhibited its highest cross-state similarity with Washington's HB~1155, while Nevada's constitutional resolution (SJR~7) was closest to Louisiana's HB~1---states separated by considerable geographic distance but linked through policy coalition networks. California's funding bills were closest to New York's; Missouri's definitional legislation was closest to Virginia's. These ideological rather than geographic linkages are consistent with the advocacy network mechanism developed in Chapter~\ref{ch:theory} and inconsistent with the regional diffusion model \parencite{walkerDiffusionInnovationsAmerican1969}.
+
+To make the departure from geographic-proximity models visually explicit, Figure~\ref{fig:contiguity_similarity} plots the distribution of maximum cross-state cosine similarity for contiguous and non-contiguous state dyads. The two distributions are substantively indistinguishable, and the dyadic regression in Section~4.9 confirms that geographic contiguity does not predict textual similarity once coalitional and organizational network membership are controlled. Policy-coalition linkages, not shared borders, structure the observable pattern of textual convergence — a pattern to which the remainder of this chapter repeatedly returns.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{fig_4_3_coefficient_plot}
+\caption[Cross-state textual similarity by geographic contiguity]{Mean maximum cross-state cosine similarity for non-contiguous ($N = 940$) and contiguous ($N = 95$) state dyads. Diamonds indicate group means; bars represent $\pm 1$ standard error of the group mean. The two groups exhibit indistinguishable similarity, and the contiguity coefficient in the dyadic regression (Model D3, Section~\ref{sec:org_networks}) is statistically null ($\beta = +0.003$, $p = 0.734$). The figure previews the central finding that geographic proximity is not the operative channel of post-\textit{Dobbs} policy diffusion.}
+\label{fig:contiguity_similarity}
+\end{figure}
+
+\section{Legislative Mechanism and Novelty Variation}
+\label{sec:mechanism}
+
+Bills were coded into seven legislative mechanism categories (A through G) based on their primary regulatory approach. Table~\ref{tab:mechanism_novelty} presents average novelty scores by mechanism, revealing substantial variation that informs the regression analysis.
+
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{Mean Cross-State Novelty by Legislative Mechanism}
+\label{tab:mechanism_novelty}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{5.4cm}cc>{\raggedright\arraybackslash}p{4.6cm}@{}}
+\toprule
+Mechanism & $n$ & Mean Novelty & Interpretation \\
+\midrule
+A: Procedural Ban/Restriction      & 26 & 0.738 & Low---template-based \\
+B: Funding/Resource Allocation     & 46 & 0.758 & Moderate \\
+C: Constitutional Ballot           & 19 & 0.795 & Moderate--high---state-specific \\
+D: Definitional/Administrative     & 32 & 0.794 & Moderate--high \\
+E: Shield/Protections              & 38 & 0.745 & Low---template-heavy \\
+F: Criminalization/Liability       & 21 & 0.796 & Moderate--high---state-specific \\
+G: Procedural Expansion            &  6 & 0.842 & Highest---novel frameworks \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\small
+\item \textit{Note:} Cross-state novelty means computed from 188 enacted bills across 46 states. Bill counts reflect primary mechanism coding; bills with dual-mechanism classifications are assigned to their primary category. Mechanism letters (A--G) are coding labels introduced in Chapter~3 and do not imply ordinal ranking along a restrictive-to-expansive continuum. Mechanisms A and F are typically restrictive; Mechanisms E and G are typically protective; Mechanisms B, C, and D appear in both coalitions. Mechanism letters (A--G) are coding labels introduced in Chapter~3 and do not imply ordinal ranking along a restrictive-to-expansive continuum. Mechanisms A and F are typically restrictive; Mechanisms E and G are typically protective; Mechanisms B, C, and D appear in both coalitions.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Procedural expansion legislation (Mechanism~G, mean $= 0.84$) exhibited the highest novelty. This category comprises bills that broaden abortion access not by codifying new statutory rights but by restructuring the administrative and professional infrastructure through which care is delivered: scope-of-practice reforms that authorize advanced practice clinicians to provide abortion services, telehealth authorization for medication abortion, licensure and credentialing adjustments, and administrative streamlining of reporting or facility requirements. The high novelty of Mechanism~G bills reflects the absence of pre-existing templates for this relatively novel regulatory approach, which emerged as a distinct protective strategy only in the years immediately preceding \textit{Dobbs}. At the other end, procedural ban/restriction legislation (Mechanism~A, mean $= 0.74$) and shield/protection legislation (Mechanism~E, mean $= 0.75$) were the most templated categories. The low novelty of shield laws is consistent with the cross-sectional circulation of standardized protective frameworks through multi-state coalitions, while the low novelty of procedural restrictions reflects the cumulative model-bill infrastructure developed by restrictive advocacy organizations such as Americans United for Life. In both cases, the 2023 textual signature indicates a shared template environment rather than independent legislative drafting; the current cross-sectional design cannot adjudicate the temporal sequence through which these templates moved.
+
+Constitutional ballot measures (Mechanism~C, mean $= 0.80$), criminalization bills (Mechanism~F, mean $= 0.80$), and Mechanism~D bills---encompassing definitional, administrative, and reporting provisions (mean $= 0.79$)---occupied an intermediate position. Constitutional amendments require state-specific language tailored to each state's constitutional framework and amendment procedures, producing more original texts even when the policy intent converges.
+
+\section{Coalition Asymmetry: Restrictive versus Protective Patterns}
+\label{sec:coalition_asymmetry}
+Bills were classified by access direction as restrictive ($-1$), neutral ($0$), or protective ($+1$) based on their impact on abortion access. Figure~\ref{fig:coalition} and Table~\ref{tab:coalition_stats} present descriptive statistics by coalition, revealing a pattern that becomes central to the regression analysis.
+
+The protective coalition mean Squire score (0.503) substantially exceeds the restrictive coalition mean (0.275), reflecting the geographic concentration of protective legislation in higher-capacity states. This institutional confound is addressed directly in the Stage Two regression (Section~\ref{sec:regression}), where the partisan-control variable absorbs much of the variance otherwise attributable to professionalism, and is part of why the professionalism coefficient strengthens in magnitude when government control enters Model 3.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{ch_findings/fig_4_4_professionalism_scatter.pdf}
+    \caption[Novelty by coalition alignment]{Distribution of cross-state novelty scores by coalition alignment (violin plots with individual bill observations). Horizontal bars indicate group means. Protective bills exhibit a lower mean novelty ($\mu = 0.754$) and a heavier left tail compared to restrictive bills ($\mu = 0.765$). The bracket annotation reports both the raw descriptive difference in means ($\Delta = -0.011$) and the Model~3 adjusted Protective-vs-Neutral coefficient ($\beta = -0.076$, $p = 0.022$). These reference different pairwise comparisons and should not be read as corresponding to one another. The heavy left tail of protective legislation reflects template-based shield law deployment, while the compact distribution of neutral bills reflects the administrative character of that category.}
+    \label{fig:coalition}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{Descriptive Statistics by Coalition Alignment}
+\label{tab:coalition_stats}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Measure               & Restrictive & Protective & Neutral \\
+\midrule
+$N$ (bills)           & 88          & 73         & 27      \\
+Mean novelty          & 0.765       & 0.754      & 0.826   \\
+Median novelty        & 0.773       & 0.780      & 0.850   \\
+Std.\ deviation       & 0.099       & 0.151      & 0.086   \\
+Mean professionalism  & 0.275       & 0.503      & 0.332   \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\small
+\item \textit{Note:} Computed from 188 bills in the corrected cross-state corpus. Professionalism aggregated at the bill level (mean of the Squire Index across all bills within each coalition). Reference category for H3 regression tests in Neutral. The protective-restrictive Squire asymmetry visible in this table is discussed in the body text immediately preceding Figure~4.4.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+Protective coalition bills exhibited lower mean novelty (0.754) than restrictive coalition bills (0.765), with greater dispersion ($SD = 0.151$ versus $0.099$). The larger standard deviation among protective bills reflects the presence of both heavily templated shield laws (the left tail visible in Figure~\ref{fig:coalition}) and highly original procedural expansion legislation. This finding runs counter to conventional expectations. The standard narrative in post-\emph{Dobbs} commentary emphasizes the role of organizations like AUL and Susan B. Anthony Pro-Life America in distributing model restrictive legislation, which would predict lower novelty among restrictive bills. Instead, the data reveal that protective coalitions engaged in more aggressive template sharing in 2023.
+
+This coalition asymmetry is interpretable through the constitutional vacuum diffusion framework developed in Chapter~\ref{ch:theory}. Prior to \emph{Dobbs}, restrictive states had decades to develop and refine their policy toolkits through incremental legislation under \emph{Roe's} constraints. Post-\emph{Dobbs}, these states were experimenting with newly available regulatory space, producing more textually diverse legislation. Protective states, by contrast, faced an urgent and unprecedented need to codify access protections rapidly, driving coordinated deployment of standardized shield law and access protection frameworks. The diffusion asymmetry is consistent with the interpretation that the \textit{Dobbs} shock created different strategic imperatives for each coalition---an interpretation developed at length in Chapter~5 and qualified against rival mechanisms in Section~\ref{subsec:text-necessary}.
+
+\section{Stage Two Regression Analysis: Predicting Bill-Level Novelty}
+\label{sec:regression}
+
+This section reports the results of OLS regression models testing five of the six hypotheses developed in Chapter~\ref{ch:theory} (H1--H4, H6). H5 (advocacy network dyadic ties), tested through a separate dyadic regression on 1,035 state pairs, is reported in Section~\ref{sec:org_networks}. The dependent variable across all models is the cross-state novelty score for each bill:
+
+\begin{equation}
+\text{Novelty}_i = \beta_0 + \beta_1 \text{Squire}_s + \beta_2 \text{Direction}_i + \beta_3 \text{Mechanism}_i + \beta_4 \text{Advocacy}_s + \beta_5 \text{GovControl}_s + \varepsilon_i
+\label{eq:regression}
+\end{equation}
+
+\noindent where subscript $i$ indexes bills and $s$ indexes states. Observations are clustered by state (46 state clusters in Model 1; 37 in Models 2-3, which restrict bills from states with non-missing 2022 DIME advocacy data; $N = 175$--$188$ depending on specification). Standard errors are clustered at the state level throughout.
+
+\subsection{Model Specification}
+\label{sec:model_spec}
+Three nested models test progressively richer specifications:
+
+\textbf{Model~1 (Baseline)} includes legislative professionalism (Squire Index, continuous), bill access direction (restrictive, protective, or neutral, with neutral as reference), and legislative mechanism (categories A--G, with A as reference). This tests H1, H3, and H4.
+
+\textbf{Model~2 (Advocacy)} adds the natural log of state-level advocacy spending from 2022 DIME data, $\ln(\text{AdvocacySpending}_s + 1)$, testing H6.
+
+\textbf{Model~3 (Full)} adds government control (unified Democratic, unified Republican, or divided, with divided as reference), testing H2. This is the preferred specification.
+
+Because legislative mechanism and access direction are conceptually related---criminalization bills (Mechanism~F) are definitionally restrictive, and procedural expansion bills (Mechanism~G) are definitionally protective---the potential for collinearity between these two sets of predictors warrants attention. Variance inflation factors for Model~3 remain within conventionally acceptable bounds (see Appendix Table~C.1), but to verify that the coalition asymmetry documented below is not an artifact of the joint inclusion of direction and mechanism, I estimate two supplementary specifications. Model~3a retains the direction indicators and drops mechanism fixed effects; Model~3b retains mechanism fixed effects and drops the direction indicators. The results corroborate the Model~3 estimates across all substantively important predictors. In Model~3a, the Protective coefficient remains significant and nearly identical in magnitude $\beta = -0.073, p = 0.033$, while the Restrictive coefficient remains non-significant $\beta = -0.037, p = 0.105$. In Model~3b, the Procedural Expansion coefficient remains significant $\beta = +0.087, p = 0.040$, attenuated relative to Model~3's estimate of +0.125 but reaching conventional significance under the more conservative small-sample correction. The professionalism coefficient remains negative and directionally stable across both specifications $\beta = -0.159, p = 0.098$ in Model~3a; $\beta = -0.158, p = 0.075$ in Model~3b), though the associated p-values loosen modestly when either set of controls is removed---indicating that direction and mechanism are jointly doing analytic work in sharpening the professionalism estimate. The unified Democratic coefficient remains significant in Model~3a ($p=0.044$) and marginal in Model~3b ($p=0.060$), and the advocacy-spending null holds in both specifications. Full coefficient matrices for Models~3a and 3b are reported in Appendix Table~C.2. The coalition asymmetry central to this chapter's findings is therefore robust to the alternative specification strategy, and the results reported below should not be read as artifacts of multicollinearity between direction and mechanism.
+% 
+
+\subsection{Results}
+\label{sec:reg_results}
+Figure~{\ref{fig:coefplot}} visualizes the coefficient estimates and 95\% confidence intervals from the preferred specification (Model~3), and Table~{\ref{tab:regression}} reports the full coefficient matrix for all three nested models.
+
+Standard errors are Bell--McCaffrey CR2 cluster-robust with Satterthwaite-approximated degrees of freedom \parencite{pustejovskyCRVEAnywhere2018}, clustered at the state level and implemented via \texttt{estimatr::lm\_robust}; this is the appropriate small-sample correction for cluster counts under fifty.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{ch_findings/fig_4_5_coalition_comparison.pdf}
+    \caption[Coefficient plot: Model 3 regression estimates]{Coefficient estimates and 95\% confidence intervals from Model~3 (Full specification). Filled diamonds indicate coefficients significant at $p < 0.05$; open circles indicate non-significant estimates. Colors distinguish variable categories: institutional (purple), advocacy (gray), direction (brown), mechanism (green), and government control (blue). The zero-line separates effects associated with increased novelty (right) from those associated with decreased novelty (left, i.e., greater borrowing).}
+    \label{fig:coefplot}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{OLS Regression Results: Predicting Cross-State Bill Novelty}
+\label{tab:regression}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Model 1 & Model 2 & Model 3 \\
+ & Baseline & Advocacy & Full \\
+\midrule
+Intercept
+  & $0.802^{***}$ & $0.797^{***}$ & $0.732^{***}$ \\
+  & (0.040) & (0.045) & (0.060) \\[6pt]
+Professionalism (Squire)
+  & $-0.058$ & $-0.042$ & $-0.155^{\dagger}$ \\
+  & (0.072) & (0.084) & (0.062) \\[6pt]
+Direction: Protective
+  & $-0.060^{\dagger}$ & $-0.062^{\dagger}$ & $-0.076^{*}$ \\
+  & (0.031) & (0.034) & (0.030) \\[6pt]
+Direction: Restrictive
+  & $-0.047^{\dagger}$ & $-0.046^{\dagger}$ & $-0.017$ \\
+  & (0.023) & (0.022) & (0.024) \\[6pt]
+Mech B: Funding
+  & $0.022$ & $0.026$ & $0.035$ \\
+  & (0.023) & (0.022) & (0.023) \\[6pt]
+Mech C: Constitutional
+  & $0.054$ & $0.046$ & $0.063^{\dagger}$ \\
+  & (0.039) & (0.040) & (0.034) \\[6pt]
+Mech D: Definitional
+  & $0.047$ & $0.035$ & $0.046$ \\
+  & (0.029) & (0.029) & (0.032) \\[6pt]
+Mech E: Shield
+  & $0.031$ & $0.040$ & $0.043$ \\
+  & (0.035) & (0.034) & (0.035) \\[6pt]
+Mech F: Criminalization
+  & $0.046$ & $0.036$ & $0.037$ \\
+  & (0.030) & (0.030) & (0.029) \\[6pt]
+Mech G: Proc.\ Expansion
+  & $0.127^{**}$ & $0.123^{*}$ & $0.125^{*}$ \\
+  & (0.034) & (0.035) & (0.037) \\[6pt]
+$\ln$(Advocacy Spending)
+  & & $0.002$ & $0.002$ \\
+  & & (0.002) & (0.002) \\[6pt]
+Unified Democratic
+  & & & $0.145^{*}$ \\
+  & & & (0.061) \\[6pt]
+Unified Republican
+  & & & $0.071$ \\
+  & & & (0.039) \\[6pt]
+\midrule
+$R^2$          & 0.076 & 0.069 & 0.150 \\
+Adj.\ $R^2$   & 0.030 & 0.012 & 0.087 \\
+$F$-statistic  & 7.69  & 6.13  & $8.43^{***}$ \\
+$N$            & 188   & 175   & 175 \\
+State clusters & 46    & 37    & 37 \\
+\bottomrule
+\end{tabular}
+\par\medskip
+\parbox{0.92\textwidth}{\footnotesize
+\textit{Note:} Reference categories: Direction $=$ Neutral; Mechanism $=$ A (Procedural Ban/Restriction); Government $=$ Divided. Model~1 tests H1, H3, and H4; Model~2 adds H6; Model~3 adds H2. Models~2 and 3 restrict the sample to the 175 bills from states with non-missing 2022 DIME advocacy data. All raw VIFs $< 5$ (max $= 4.64$); all $\sqrt{\mathrm{VIF}} < 2.2$; max Cook's D $= 0.16$.\\[2pt]
+$^{***}p < 0.001$;\enspace $^{**}p < 0.01$;\enspace $^{*}p < 0.05$;\enspace $^{\dagger}p < 0.10$.}
+\end{table}
+
+The hypothesis-by-hypothesis interpretation that follows turns on Model 3's coefficient estimates. The reported $R^{2}$ values---0.076, 0.069, and 0.150 for Models 1 through 3, respectively (Table~\ref{tab:regression})---are modest by cross-sectional standards but consistent with diffusion specifications in which the unit of analysis (the bill) operates at a finer grain than the predictors (state-level institutional and partisan characteristics). \textcite{shipanMechanismsPolicyDiffusion2008a} report comparable explained variance in city-level adoption models for analogous reasons.
+
+
+\subsection{Hypothesis Tests: Interpretation}
+\label{sec:hypotheses}
+\subsubsection{H1: Legislative Professionalism (Unexpected Sign; Marginal)}
+The hypothesis predicted that states with higher legislative professionalism would produce more original legislation. The coefficient runs counter to this theoretical prediction: in the full model, a one-unit increase in the Squire Index is associated with a 0.155-point decrease in cross-state novelty ($\beta = -0.155$, $p = 0.069$), marginally significant under the Bell-McCaffrey CR2 small-sample correction \parencite{pustejovskyCRVEAnywhere2018}, which produces conservative inference for cluster counts under fifty. Because the coefficient reaches conventional significance only in Model 3 and is non-significant in the baseline and advocacy specifications, this finding should be interpreted as suggestive rather than conclusive. The consistent direction of the estimate across specifications nonetheless warrants theoretical engagement, which Chapter 5 develops as a reinterpretation of the relationship between institutional capacity and template adoption. The coefficient is negative across all three specifications, though its magnitude increases substantially when government control enters in Model~3---from $\beta = -0.058$ in the baseline to $\beta = -0.155$ in the full model---suggesting that the professionalism effect is partially masked by the correlation between legislative capacity and partisan alignment. Once the partisan structure is held constant, the independent relationship between professionalism and template adoption becomes visible. The direction of this finding is interpretable through \textcite{jansaCopyPasteLawmaking2019}'s analysis of model-bill adoption and \textcite{shipanMechanismsPolicyDiffusion2008a}'s finding that legislative professionalism moderates diffusion mechanisms: professional legislatures possess the staff resources and research infrastructure to identify, evaluate, and strategically adopt external models, whereas less-professionalized legislatures draft more independently---not because they innovate more, but because they lack systematic access to the templates circulating through interstate networks. As Figure~\ref{fig:professionalism} illustrates, this relationship is visible in the negative slope of the professionalism--novelty scatterplot, with high-capacity states like California and New York clustering below the regression line while low-capacity states like Wyoming and Maine cluster above it.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_4_4_professionalism_scatter}
+    \caption[Professionalism vs.\ novelty scatterplot]{Relationship between legislative professionalism (Squire Index) and mean cross-state novelty by state. Point size proportional to bill count. Dashed line indicates the linear fit ($\beta = -0.155$, $p = 0.069$). High-professionalism states (California, New York, Michigan) tend to produce lower-novelty bills, consistent with capacity-for-adoption rather than capacity-for-innovation. States labeled are those with $N \geq 4$ enacted bills, with Wyoming and Nevada additionally labeled as bottom-quartile and exemplar low-similarity cases for cross-reference with \S\ref{sec:geographic}.}
+    \label{fig:professionalism}
+\end{figure}
+
+\subsubsection{H2: Unified Government (PARTIALLY SUPPORTED)}
+Government control enters only in Model~3, where unified Democratic governments produce significantly more novel legislation than divided governments ($\beta = +0.145$, $p = 0.037$). Unified Republican governments show a positive but non-significant effect under CR2 corrections ($\beta = +0.071$, $p = 0.106$). The asymmetry is substantively interpretable: Democratic trifectas in 2023 were more likely to be legislating in genuinely new policy space---codifying protections that had never required statutory form under \emph{Roe}---whereas Republican trifectas were more likely to be refining existing restrictive frameworks whose statutory architecture had been developed incrementally over the preceding decades. Divided governments exhibit the lowest novelty scores, consistent with the interpretation that legislative gridlock incentivizes template adoption: when parties must negotiate across the aisle, pre-existing frameworks may serve as coordination devices that reduce the bargaining costs associated with divided lawmaking \parencite[cf.][]{krehbielPivotalPoliticsTheory1998}.
+
+\subsubsection{H3: Bill Direction (Opposite Sign; Significant)}
+The hypothesis predicted that restrictive bills would exhibit lower novelty due to template distribution by organizations like AUL and Susan B. Anthony Pro-Life America. The finding runs opposite to the predicted direction: protective bills are significantly less novel than neutral bills ($\beta=-0.076$, $p=0.022$), while restrictive bills show no significant difference from the neutral baseline ($\beta=-0.017$, $p=0.482$).
+This reversal carries substantial theoretical implications, developed in Chapter~\ref{ch:discussion}. It indicates that in the first full legislative year after \emph{Dobbs}, protective coalitions---not restrictive ones---were the primary deployers of standardized legislative templates. Shield law frameworks, access codification statutes, and provider protection language circulated rapidly through protective coalition networks, producing the convergent textual signatures that the hypothesis predicted for the restrictive side. Restrictive states, by contrast, were operating in genuinely novel regulatory space: having consolidated their core toolkit through decades of incremental legislation under \emph{Roe}'s constraints---gestational limits, waiting periods, provider regulations---they now faced a policy frontier with no established template infrastructure. Total bans, trigger law activations, and enforcement mechanisms required state-specific statutory construction for which no model had yet been stress-tested in litigation.
+
+The result is what I term \textit{reactive template mobilization}: a rapid, coalition-coordinated deployment of standardized protective frameworks in direct response to the sudden expansion of the restrictive policy frontier. This mechanism is theoretically distinct from both classic learning-based diffusion and crisis diffusion as conventionally defined. It does not reflect states learning from early adopters' policy outcomes; protective states did not wait to observe whether California's shield law was effective before replicating its language. Nor does it reflect crisis-driven reactive adoption in the conventional sense of emergency legislation under time pressure. Rather, it reflects the organizational deployment of pre-positioned templates at the moment the constitutional vacuum opened---a diffusion dynamic enabled by the organizational infrastructure reviewed in Chapter~\ref{ch:theory} and evidenced in the documentary record examined in Section~\ref{sec:org_networks}. The theoretical implications of this reversal for the constitutional vacuum diffusion framework are developed fully in Chapter~\ref{ch:discussion}.
+
+\subsubsection{H4: Procedural Expansion Mechanism (PARTIALLY SUPPORTED)}
+The hypothesis predicted that procedural expansion bills (Mechanism~G) would exhibit higher novelty than categorical bans or protections, reflecting the absence of pre-existing templates for this relatively novel regulatory approach. The coefficient confirms this prediction: procedural expansion bills register $\beta = +0.125$ ($p = 0.014$) above the Mechanism~A baseline. The effect is robust across all three specifications (Models~1--3) and survives the supplementary specifications reported in Appendix~\ref{app:C.2}. The novelty premium reflects that scope-of-practice reforms, telehealth authorizations, and clinician credentialing adjustments emerged as a distinct protective strategy only in the years immediately preceding \textit{Dobbs}, leaving little template infrastructure available for cross-state borrowing.
+
+\subsubsection{H5: Advocacy Network Dyadic Ties}
+H5 requires a dyadic specification distinct from the bill-level model presented here and is reported separately in Section~\ref{sec:org_networks}. The bill-level analysis continues with H6 below.
+
+\subsubsection{H6: Advocacy Spending (NULL)}
+State-level advocacy spending, measured as ln(state advocacy spending + 1) from 2022 DIME data, does not predict bill novelty ($\beta = +0.002$, $p = 0.270$). The addition of the advocacy term in Model~2 produces a slight decline in explained variance relative to the baseline ($R^2 = 0.069$ versus 0.076), a pattern attributable to the listwise deletion of thirteen bills from states with missing 2022 DIME contribution data ($N$ = 175 versus 188). The null finding should therefore be interpreted as a coefficient result rather than as a loss of explanatory power: advocacy spending contributes nothing to the model on the restricted sample, and the restriction itself modestly reduces the variance the baseline controls can explain. This null finding is consistent across all specifications and robust to alternative functional forms.
+
+It does not indicate that advocacy organizations are irrelevant to legislative diffusion; rather, it indicates that \emph{financial} mechanisms---PAC contributions---are not the channel through which coordination operates. The PAC paradox, detailed in Section 4.8, provides further evidence for this interpretation. This finding is consistent with \textcite{hallLobbyingLegislativeSubsidy2006a}'s reconceptualization of interest group influence as informational subsidy rather than financial exchange: organizations affect policy by reducing the cost of legislative action, not by purchasing it.
+
+%
+
+\subsection{Summary of Hypothesis Tests}
+\label{sec:hyp_summary}
+
+Table~\ref{tab:hyp_summary} summarizes the results for H1 through H4 and H6; Figure~\ref{fig:hyp_summary} presented in Section~\ref{sec:h5} once the dyadic specification has been introduced, supplies a unified visual summary across all six hypotheses, including the dyadic H5 estimate developed below.
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{table}[H]
+\centering
+\caption{Summary of Hypothesis Tests}
+\label{tab:hyp_summary}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{6pt}
+\footnotesize
+\begin{tabular}{@{}c >{\raggedright\arraybackslash}p{4.6cm} c >{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}p{4.2cm}@{}}
+\toprule
+ & \textbf{Independent Variable} & \textbf{Observed $\hat{\beta}$} & \textbf{Result} & \textbf{Interpretation} \\
+\midrule
+H1 & Professionalism (Squire) & $-0.155^{\dagger}$ & Rejected; opposite-sign, marginal & Capacity enables adoption \\
+\addlinespace[3pt]
+\multirow{2}{*}{H2}
+   & Unified Democratic govt & $+0.145^{**}$  & Supported       & \multirow{2}{*}{Asymmetric partisan effect} \\
+   & Unified Republican govt & $+0.071$       & Not significant &                                            \\
+\addlinespace[3pt]
+H3 & Direction: Protective & $-0.076^{*}$ & Inverted & Protective borrows more \\
+   & Direction: Restrictive & $-0.017$ & Null & \\
+\addlinespace[3pt]
+H4 & Mech G (Proc.\ Expansion) & $+0.125^{*}$ & Partially supported & Novel domain, no templates \\
+\addlinespace[3pt]
+H5 & Both Protective (dyadic) & $+0.037^{**}$ & Supported & Coalition networks drive convergence \\
+   & PAC Org.\ Overlap (Jaccard) & $+0.039^{***}$ & Supported & Informational, not financial \\
+\addlinespace[3pt]
+H6 & Advocacy spending & $+0.002$ & Null & Money $\neq$ mechanism \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Note:} H1, H2, H3, H4, and H6 coefficients are drawn from Table~4.3, Model~3 (bill-level specification, $N = 175$, $R^{2} = 0.150$). H5 coefficients are drawn from Table~\ref{tab:dyadic_regression}, Model D3 (dyadic specification, $N = 1{,}035$ state dyads, $R^{2} = 0.224$). All standard errors are Bell--McCaffrey CR2 cluster-robust with Satterthwaite-approximated degrees of freedom. H3 predicted restrictive bills would exhibit lower novelty than neutral; the significant effect is observed on \textit{protective} bills instead. $^{***}p < 0.001$, $^{**}p < 0.01$, $^{*}p < 0.05$, $^{\dagger}p < 0.10$.
+\end{minipage}
+\end{table}
+
+\section{Cross-State Coordination: High-Similarity Bill Pairs}
+\label{sec:coordination}
+To surface candidate causes of cross-state policy coordination for case-level inspection, I examined all bill pairs exceeding a 40 percent cosine similarity threshold across different states. This is the inspection threshold introduced in Section~\ref{sec:coordination} and is more permissive than the 0.50 formal classification boundary that defines "heavy borrowing" in Table~3.2; the broader cut surfaces a wider set of dyads warranting qualitative scrutiny without making formal coordination claims about each. Of the 16,972 possible cross-state pairings in the $188 \times 188$ matrix, ten pairs exceeded this threshold (Table~\ref{tab:high_sim}).
+
+One pair stands dramatically apart. Nevada SB~370 and Washington HB~1155 exhibit 80.7 percent cosine similarity---the only pair exceeding 50 percent in the corrected dataset and the strongest evidence of cross-state template coordination in the corpus. Both bills addressed interstate protection of reproductive health care providers and patients, deploying substantially overlapping shield law language despite originating in states separated by over 700 miles. No other cross-state pair approaches this level of convergence; the next highest (Colorado SB~188 and Vermont SB~37, at 48.7 percent) falls substantially below.
+
+Three patterns emerge from the broader set of coordination candidates. First, a Vermont hub is visible among protective legislation: Vermont SB~37 appears as the closest cross-state partner for bills in Colorado, California, and New Mexico, all involving protective shield or constitutional provisions. This pattern suggests a common template source from which multiple states adapted language to local statutory contexts.
+
+The temporal sequencing within the Vermont hub is suggestive but warrants cautious interpretation. Vermont SB~37 was enacted earlier in the 2023 legislative calendar than the Colorado, California, and New Mexico bills for which it serves as the closest cross-state match, a sequencing consistent with Vermont functioning as a template source. The cross-sectional design of this analysis does not model enactment timing explicitly, and systematic investigation of the temporal structure of within-coalition diffusion is identified in Chapter~\ref{ch:limitations} as a priority for longitudinal extension.
+
+Second, a Missouri--Virginia axis is visible among restrictive-leaning legislation: two Missouri bills (HB~1155 and HB~402) are textually closest to Virginia SB~975, all involving definitional or procedural frameworks. This represents the strongest cluster of restrictive cross-state coordination in the dataset, though the similarity levels (47.1 percent and 41.7 percent) reflect more adaptation than the near-replication observed in the Nevada--Washington pair.
+
+Third, and consistent with the coalition asymmetry documented in Section~\ref{sec:coalition_asymmetry}, six of the ten high-similarity pairs involve exclusively protective legislation, while only one is exclusively restrictive. This pattern reinforces the regression finding that protective coalitions engaged in more aggressive template sharing in 2023.
+
+\begin{table}[H]
+\centering
+\caption{Cross-State Bill Pairs Exceeding 40\% Cosine Similarity}
+\label{tab:high_sim}
+\begin{threeparttable}
+\begin{tabular}{rllcl}
+\toprule
+\# & Bill 1 & Bill 2 & Sim. & Joint Direction \\
+\midrule
+1  & Nevada SB 370        & Washington HB 1155   & 0.807 & Protective  \\
+2  & Colorado SB 188      & Vermont SB 37        & 0.487 & Protective  \\
+3  & Missouri HB 1155     & Virginia SB 975      & 0.471 & Mixed       \\
+4  & California SB 345    & Vermont SB 37        & 0.465 & Protective  \\
+5  & New Mexico SB 13     & Vermont SB 37        & 0.452 & Protective  \\
+6  & Colorado SB 188      & New Mexico SB 13     & 0.447 & Protective  \\
+7  & Missouri HB 1155     & Wisconsin SB 196     & 0.436 & Mixed       \\
+8  & Pennsylvania HB 611  & Washington SB 5187   & 0.423 & Mixed       \\
+9  & Missouri HB 402      & Virginia SB 975      & 0.417 & Restrictive \\
+10 & California AB 100    & New York AB 3003     & 0.415 & Protective  \\
+11 & Michigan HB 4949     & Nevada SJR 7         & 0.406 & Protective  \\
+12 & Iowa HB 732          & South Carolina SB 474 & 0.405 & Restrictive \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item \textit{Note:} All cross-state bill pairs with cosine similarity $\geq 0.40$
+  from the corrected 188-bill corpus. Joint Direction classifies the pair as
+  Protective (both bills expand access), Restrictive (both restrict access),
+  or Mixed (bills move in opposite directions). Similarity values computed from
+  the TF--IDF cosine similarity matrix described in Section~\ref{sec:computation}.
+  The complete catalog of 48 pairs exceeding 0.30 is reported in
+  Appendix~\ref{app:D}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\section{The PAC Paradox: Advocacy Spending and Textual Convergence}
+\label{sec:pac_paradox}
+Cross-referencing the highest-similarity cross-state pairs with Federal Election Commission data produced a striking null result: \textit{zero common PAC donors} were identified between the sponsors of any high-similarity bill pair. Most critically, neither sponsor in the Nevada--Washington pair---the strongest coordination case in the dataset---received any abortion-related PAC contributions in the 2022 cycle. This finding extends beyond the specific high-similarity pairs. Systematic analysis of the full DIME database---encompassing over 53 million contribution records---identified near-zero direct PAC contributions from abortion advocacy organizations to state legislative candidates.
+
+The PAC paradox---high textual coordination coexisting with near-zero direct financial connections between coordinated legislators---is not a data limitation. It is a substantive finding that reorients the diffusion mechanism story. The theoretical literature on policy diffusion has increasingly distinguished between financial and informational mechanisms of interest group influence \parencite{hallLobbyingLegislativeSubsidy2006a,hertel-fernandezStateCapture2019}. Financial mechanisms operate through campaign contributions that create access and incentivize favorable legislative behavior. Informational mechanisms operate through model legislation distribution, legislative staff liaison, coordinated testimony, and policy research provision. The PAC paradox documented here provides empirical evidence that abortion policy diffusion operates primarily through informational channels. Organizations like the Center for Reproductive Rights and Americans United for Life influence state legislation, not by funding legislators but by providing legislative frameworks, legal expertise, and model statutory language that resource-constrained legislatures adopt with varying degrees of modification.
+
+\section{Organizational Networks and Documentary Evidence}
+\label{sec:org_networks}
+
+The preceding sections established that textual convergence across states follows ideological rather than geographic lines (Section~\ref{sec:geographic}), that protective coalitions exhibit greater convergence than restrictive coalitions 
+(Sections~\ref{sec:coalition_asymmetry} and~\ref{sec:regression}), and that financial advocacy channels cannot explain this coordination (Section 4.8).
+This section examines documentary evidence from LegiScan legislative records, FEC data, and advocacy organization publications to classify the organizational pathways through which high-similarity bill pairs emerged.
+
+\subsection{Four Diffusion Mechanisms}
+\label{sec:four_mechanisms}
+Based on the documentary evidence framework described in Chapter~\ref{ch:methodology}, I classify observed diffusion patterns into four theoretically distinct mechanisms.
+
+\textbf{Coordinated diffusion} occurs when national organizations deliberately distribute model legislation to state legislative allies, producing high textual similarity with low adaptation. Documentary markers include explicit model-bill attribution in legislative history, standardized testimony across multiple states, and organizational publication of model statutory language.
+
+\textbf{Collaborative diffusion} occurs when states within the same advocacy coalition develop legislation through ongoing negotiation and framework sharing, producing moderate similarity with substantial local adaptation. Documentary markers include shared organizational affiliation of sponsors, coordinated but non-identical testimony, and evidence of multi-state working groups in advocacy publications.
+
+\textbf{Internal learning} occurs when state legislatures independently study and adapt external frameworks through their own research infrastructure, producing moderate similarity with high adaptation. Documentary markers include legislative council reports, referencing other states and committee hearing testimony from state research staff.
+
+\textbf{Competitive diffusion} occurs when opposing coalitions develop mirror-image legislation in response to each other's policy actions, producing moderate structural similarity despite opposite policy directions.
+
+\subsection{Coalition Asymmetry in Diffusion Mechanisms}
+\label{sec:coalition_mechanisms}
+
+Across the high-priority bill pairs analyzed through documentary evidence, a clear pattern of coalition asymmetry emerges. Restrictive coalitions demonstrate centralized, hierarchical diffusion patterns consistent with coordinated template distribution from national organizations. Protective coalitions demonstrate distributed, collaborative networks in which states participate in ongoing framework negotiation rather than passively receiving templates.
+
+This asymmetry is consistent with the organizational structures documented in the political science literature on advocacy networks \parencite{hertel-fernandezStateCapture2019}. The restrictive coalition infrastructure---built around AUL, Alliance Defending Freedom, and Susan B. Anthony Pro-Life America---operates through vertical distribution: national organizations draft model bills and distribute them to state legislative allies. The protective coalition infrastructure---organized through organizations like the Center for Reproductive Rights, NARAL, and Planned Parenthood---operates through horizontal coordination: state-level affiliates share frameworks laterally, adapting each other's legislative approaches through collaborative refinement.
+
+The exporter-importer-reinforcer typology developed in Chapter~\ref{ch:theory} operates differently across coalitions. Within restrictive networks, a small number of exporter states (Texas, Utah) generate frameworks that importers adopt with minimal modification. Within protective networks, the roles are more fluid: California functions simultaneously as exporter, adapter, and reinforcer, originating some frameworks while incorporating and refining language from New York, Washington, and other coalition partners. The protective coalition's lower mean novelty score thus reflects not passive adoption but \textit{active coordination} within a distributed network.
+
+\subsection{H5: Advocacy Network Dyadic Ties (SUPPORTED)}
+\label{sec:h5}
+
+Hypothesis H5 predicts that state pairs sharing advocacy network ties will exhibit greater textual similarity in their enacted legislation. Testing H5 requires a dyadic regression framework with state pairs as the unit of analysis---a fundamentally different modeling approach from the bill-level OLS reported in Section~\ref{sec:regression}. The dependent variable is the maximum pairwise cosine similarity between any bill enacted in state $i$ and any bill enacted in state $j$, computed from the full $188 \times 188$ cross-state similarity matrix:
+
+The dyadic dependent variable is constructed as the maximum pairwise cosine similarity observed across all bill pairs that can be formed between two states, formalized in Equation~4.4. Taking the maximum rather than the mean captures the strongest evidence of coordination between any two states: if states $i$ and $j$ enacted multiple bills each, the most similar pair represents the clearest textual signal of cross-state borrowing.
+
+\begin{equation}
+\text{MaxSim}_{ij} = \max_{b_i \in S_i,\, b_j \in S_j} \text{CosSim}(b_i, b_j)
+\label{eq:dyadic_dv}
+\end{equation}
+
+\noindent where $S_i$ and $S_j$ denote the sets of bills enacted in states $i$ and $j$, respectively. This yields 1,035 unique state dyads ($46 \times 45 / 2$). Table~\ref{tab:dyadic_regression} reports results from three nested specifications.
+
+\begin{table}[htbp]
+\centering
+\caption{Dyadic Regression Results: Predicting State-Pair Maximum Cosine Similarity}
+\label{tab:dyadic_regression}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & Model D1 & Model D2 & Model D3 \\
+ & Institutional & + Direction & Full \\
+\midrule
+Intercept
+  & $0.048^{***}$ & $0.038^{***}$ & $0.020^{\dagger}$ \\
+  & (0.010) & (0.010) & (0.010) \\[6pt]
+$\ln$(Bill count product)
+  & $0.035^{***}$ & $0.035^{***}$ & $0.035^{***}$ \\
+  & (0.004) & (0.004) & (0.004) \\[6pt]
+$|\Delta$ Squire$|$
+  & $-0.029$ & $-0.029$ & $-0.029$ \\
+  & (0.027) & (0.027) & (0.027) \\[6pt]
+Geographic contiguity
+  & $0.003$ & $0.003$ & $0.003$ \\
+  & (0.008) & (0.008) & (0.008) \\[6pt]
+Both Protective
+  &  & $0.037^{***}$ & $0.037^{***}$ \\
+  &  & (0.011) & (0.011) \\[6pt]
+Both Restrictive
+  &  & $0.015^{\dagger}$ & $0.012$ \\
+  &  & (0.009) & (0.009) \\[6pt]
+PAC Org.\ Overlap (Jaccard)
+  &  &  & $0.039^{***}$ \\
+  &  &  & (0.010) \\[6pt]
+\midrule
+$R^2$          & 0.155 & 0.195 & 0.224 \\
+Adj.\ $R^2$   & 0.153 & 0.191 & 0.220 \\
+$N$ (dyads)    & 1{,}035 & 1{,}035 & 1{,}035 \\
+\bottomrule
+\end{tabular}
+\par\medskip
+\parbox{0.92\textwidth}{\footnotesize
+\textit{Note:} OLS regression with state dyads as units of analysis. The dependent variable is the maximum pairwise cosine similarity between any bill enacted in state $i$ and any bill enacted in state $j$ across the full 188-bill corpus. Bell--McCaffrey CR2 cluster-robust standard errors with Satterthwaite-approximated degrees of freedom, with clusters defined on \texttt{state\_i} (the first state
+listed in each dyad, ordered alphabetically) and estimated via \texttt{estimatr::lm\_robust}. This one-way clustering specification captures within-state correlation across the dyads in which a given state appears as \texttt{state\_i}; full two-way dyadic clustering on both \texttt{state\_i} and \texttt{state\_j} \parencite{aronow2015clusterrobustvarianceestimationdyadic} is the methodologically rigorous treatment of dyadic dependence and is identified in §6.3 as a priority for replication. Reference category for the coalition indicators is mixed or neutral dyads. ``Both Protective'' and ``Both Restrictive'' identify dyads in which both states' enacted legislation leans in the same access direction. ``PAC Org.\ Overlap'' is the Jaccard similarity of the sets of abortion-related PAC donor organizations active in each state's 2022 legislative cycle, measured from the DIME database.\\[2pt]
+$^{***}p < 0.001$;\enspace $^{**}p < 0.01$;\enspace $^{*}p < 0.05$;\enspace $^{\dagger}p < 0.10$.}
+\end{table}
+
+The baseline model (D1) includes institutional predictors: the absolute difference in Squire Index scores between state $i$ and state $j$ (testing whether institutional capacity asymmetry predicts borrowing), a binary indicator for geographic contiguity, and the log of the product of bill counts in each state (controlling for the mechanical relationship between legislative volume and the probability of a high-similarity match). Model~D2 adds indicators for shared coalition membership: ``both protective'' and ``both restrictive'' identify dyads where both states' enacted legislation leans in the same access direction. Model~D3 adds the Jaccard index of shared PAC donor organizations from 2022 FEC data. The Jaccard measure is constructed as the size of the intersection of advocacy organizations active in both states, divided by the size of their union: it ranges from zero (no organizational overlap) to one (perfect overlap). Conceptually, the Jaccard index captures whether the same organizations---Planned Parenthood, Susan B. Anthony Pro-Life America, NARAL, National Right to Life Committee, and their state affiliates---maintain a concurrent advocacy footprint in both states, regardless of the magnitude of any individual contribution. This is a fundamentally different construct from the raw dollar value of contributions used in H6: the Jaccard index measures \textit{co-presence} of organizational infrastructure, while the H6 advocacy-spending variable measures \textit{volume} of financial transfers. As Section~4.8 demonstrates, the two dissociate sharply in the 2023 record.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_4_7_hypothesis_summary}
+    \caption[Summary of hypothesis tests]{Visual summary of all six hypothesis tests. Diamond markers display the observed coefficient estimates from the preferred specifications: Model~3 for H1 through H4 and H6 (bill-level OLS, $N = 175)$, and Model~D3 for H5 (dyadic OLS, $N = 1{,}035)$. Color indicates the test result. The H5 estimate reports the ``Both Protective'' coefficient from Model~D3.}
+    \label{fig:hyp_summary}
+\end{figure}
+
+Model~D3 (the preferred specification) explains 22.4 percent of the variation in state-pair maximum similarity ($R^2 = 0.224$, $N = 1{,}035$). Three findings warrant emphasis.
+
+First, shared protective coalition membership is a strong and robust predictor of textual similarity ($\beta = +0.037$, $p < 0.001$). State pairs in which both states enacted predominantly protective legislation in 2023 exhibit maximum cosine similarity 0.037 points higher than cross-coalition or neutral dyads---a substantively meaningful effect equal to 29.7 percent of the dependent variable's mean ($\beta= +0.037$ against a sample mean of 0.1247).\footnote{(0.037/0.1247 = 29.7\%)} Shared restrictive coalition membership, by contrast, shows no significant effect after controlling for organizational overlap ($\beta = +0.012$, $p = 0.158$). The protective coalition effect is approximately three times the magnitude of the restrictive effect, confirming the coalition asymmetry documented in the bill-level analysis at the dyadic level.
+
+Second, shared advocacy organization presence---measured by the Jaccard index of overlapping PAC donor organizations---independently predicts textual similarity ($\beta = +0.039$, $p < 0.001$). This variable captures whether the same organizations (Planned Parenthood, Susan B.~Anthony Pro-Life America, NARAL, National Right to Life Committee) maintain a financial presence in both states, operationalizing the advocacy network ties that H5 predicts should facilitate cross-state coordination. Critically, this finding is consistent with the PAC paradox documented in Section 4.8: the organizations' presence in a state's political ecosystem---their informational infrastructure, model legislation libraries, and affiliate networks---predicts textual convergence, even though their direct financial contributions to state legislators are negligible. The Jaccard measure thus functions as a proxy for shared organizational network membership rather than a financial transfer channel, consistent with \textcite{hallLobbyingLegislativeSubsidy2006a}'s legislative subsidy framework.
+
+Third, geographic contiguity is null ($\beta = +0.003$, $p = 0.734$) across all specifications. Whether two states share a border does not predict the similarity of their abortion legislation after controlling for coalition membership and organizational overlap. This finding directly contradicts the geographic diffusion model \parencite{walkerDiffusionInnovationsAmerican1969} and confirms that post-\emph{Dobbs} policy diffusion operated through ideological and organizational networks rather than regional proximity. The null contiguity result, combined with the strong coalition and organizational effects, provides the most direct evidence in this thesis that advocacy networks---not geographic learning or regional imitation---constitute the primary diffusion channel for abortion policy.
+
+The attenuation of the Both Restrictive coefficient between Models~D2 and D3 warrants separate comment. In the intermediate specification, shared restrictive coalition membership registers at the margin of conventional significance ($\beta = +0.015$, $p < 0.10$); once the Jaccard overlap of PAC donor organizations enters Model~D3, the coefficient attenuates to null ($\beta = +0.012$, $p = 0.158$). The pattern is consistent with the interpretation that restrictive coalition convergence operates substantially through shared organizational infrastructure: the informational and model-legislation channels that the Jaccard variable proxies absorb the marginal signal that raw coalition co-membership carried in the intermediate model. The Both Protective coefficient, by contrast, is invariant across Models~D2 and D3 at $\beta = +0.037$, indicating that protective coalition convergence operates through channels only partially captured by the PAC donor overlap measure---a pattern consistent with the horizontal, affiliate-driven coordination mechanism developed in Section~\ref{sec:coalition_mechanisms} and contrasting sharply with the centralized, vertical template distribution characteristic of the restrictive coalition infrastructure.
+
+Together, these results support H5: state dyads connected through shared advocacy organization networks exhibit significantly higher textual similarity than unconnected dyads, controlling for institutional characteristics and geographic proximity. The dyadic analysis also reinforces two findings from the bill-level regression. The coalition asymmetry identified in H3 operates not only at the individual bill level but at the state-pair level: protective coalition dyads exhibit significantly greater convergence than restrictive dyads. And the null effect of geographic contiguity at the dyadic level parallels the ideological clustering patterns documented in Section~\ref{sec:geographic}.
+
+\section{Chapter Summary}
+\label{sec:findings_summary}
+
+This chapter has presented quantitative findings across three analytical stages. Four results warrant emphasis.
+
+First, post-\emph{Dobbs} abortion legislation in 2023 was characterized by moderate textual borrowing across states (mean cross-state novelty $= 0.769$, $SD = 0.122$), with the distribution concentrated between 0.70 and 0.90 novelty. This concentration is inconsistent with either independent state innovation or wholesale template replication; it confirms that customized adoption---the selective incorporation of external frameworks with state-specific modifications---was the dominant mode of diffusion in the first full legislative cycle following \emph{Dobbs}.
+
+Second, the bill-level regression analysis (Model~3, $R^2 = 0.150$, $N = 175$) reveals a consistent pattern across institutional predictors. Legislative professionalism is associated with greater borrowing rather than greater innovation ($\beta = -0.155$, $p = 0.069$), a directional finding consistent with the capacity-for-adoption interpretation even at marginal significance under conservative CR2 corrections. When government control is added in Model~3, unified Democratic governments produce significantly more novel legislation than divided governments ($\beta = +0.145$, $p = 0.037$), while the unified Republican effect is positive but does not reach conventional significance ($\beta = +0.071$, $p = 0.106$). Critically, the addition of partisan control does not attenuate the direction or mechanism effects established in the baseline specification, indicating that the coalition asymmetry identified through H3 operates independently of state-level partisan alignment. State-level advocacy spending---the financial footprint of abortion-focused PACs in each state---predicts neither greater nor lesser novelty ($\beta = 0.002$, $p > 0.10$), establishing that financial mechanisms are not the operative channel of coordination.
+
+Third, and most consequentially, protective coalition bills exhibit significantly lower novelty than the neutral baseline ($\beta = -0.076$, $p = 0.022$), while restrictive bills do not ($\beta=-0.017$, $p=0.482$). This reversal of H3---together with the PAC finding of zero common donors across all high-similarity cross-state pairs---indicates that post-\emph{Dobbs} diffusion operated through informational and organizational channels rather than financial ones, and that it was protective coalitions, not restrictive ones, who deployed standardized templates most aggressively in 2023. This finding revises the dominant scholarly and journalistic account of post-\emph{Dobbs} legislative coordination.
+
+Fourth, the cross-state similarity analysis reveals one pair dramatically above the rest---Nevada SB~370 and Washington HB~1155 at 80.7 percent cosine similarity, the singular instance of near-replication in the dataset---alongside nine additional pairs exceeding 40 percent similarity. Six of these ten pairs involve exclusively protective legislation, reinforcing the coalition asymmetry identified in the regression. Documentary evidence across these pairs reveals asymmetric coalition architectures: restrictive networks employed centralized, vertical template distribution from national organizations, while protective networks employed distributed, horizontal coordination among state affiliates. The dyadic regression (Model~D3, $R^2 = 0.224$, $N = 1{,}035$; full coefficients in Table~4.6) confirms these patterns at the state-pair level. Shared protective coalition membership and shared advocacy organization presence are robust independent predictors of cross-state textual similarity, while geographic contiguity is null. Together, the bill-level and dyadic specifications identify organizational network infrastructure---not financial contributions or regional proximity---as the operative mechanism of cross-state policy diffusion in 2023.
+
+These findings collectively establish the empirical foundation from which Chapter~\ref{ch:discussion} develops the constitutional vacuum diffusion framework as a theoretical extension of existing policy diffusion scholarship and from which Chapter~\ref{ch:limitations} addresses the inferential scope conditions the observational design imposes.
